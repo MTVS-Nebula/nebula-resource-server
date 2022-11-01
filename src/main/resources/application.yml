@@ -1,0 +1,34 @@
+#ServerPort
+server:
+  port: 8001
+
+#ConfigImport
+spring:
+  application:
+    name: nebula
+  profiles:
+    active: jwt, datasource, aws
+  config:
+    import:
+      - optional:configserver:http://ip-172-31-1-205.ap-northeast-2.compute.internal:8001
+  #JpaConfig
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  #Multipart
+  servlet:
+    multipart:
+      location: classpath:tempfile
+  #Hikari Refresh
+  cloud:
+    refresh:
+      extra-refreshable: javax.sql.DataSource
+
+#Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
