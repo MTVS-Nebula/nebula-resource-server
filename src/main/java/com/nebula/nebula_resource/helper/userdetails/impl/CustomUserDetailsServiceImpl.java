@@ -48,9 +48,17 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
             throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
         }
 
-        return new org.springframework.security.core.userdetails.User(
+        // userDetails 객체 생성
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
                 user.getUsername(), user.getPassword(), authorities
         );
+
+        // 토큰 검증
+        if (!jwtUtil.validateToken(token, userDetails)){
+            throw new RuntimeException("토큰 정보가 올바르지 않습니다.");
+        }
+
+        return userDetails;
     }
 }
 
