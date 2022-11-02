@@ -1,5 +1,6 @@
 package com.nebula.nebula_resource.helper.jwt;
 
+import com.nebula.nebula_resource.helper.userdetails.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,13 +18,13 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
     private final String headerKey;
     private final String prefix;
 
 
     @Autowired
-    public JwtFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
+    public JwtFilter(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
         this.headerKey = jwtUtil.getHeaderKey();
@@ -63,17 +64,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
     /** Jwt token 으로 UsernamePasswordAuthenticationToken 만들기 */
     private UsernamePasswordAuthenticationToken getUsernamePasswordAuthenticationToken(String token){
-        String username = jwtUtil.extractUsername(token);
-        if(username != null){
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if(jwtUtil.validateToken(token, userDetails)){
-                System.out.println(new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()));
-                return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            } else {
-                throw new RuntimeException("token is not valid");
-            }
-        } else {
-            throw new RuntimeException("token's username is null");
+        try {
+            UserDetails userDetails = userDetailsService.loadUserByToken(token);
+            return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        } catch (RuntimeException e){
+            throw e;
         }
     }
 }
