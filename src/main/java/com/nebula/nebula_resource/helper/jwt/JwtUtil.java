@@ -50,7 +50,7 @@ public class JwtUtil {
         if(claims.get("roles")==null){
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
-        return Arrays.stream(claims.get("roles").toString().split(","))
+        return Arrays.stream(claims.get("roles").toString().replaceAll("[\\[\\[\\]]","").split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }

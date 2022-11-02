@@ -76,7 +76,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/admin/**","/actuator/**").hasAnyAuthority("ADMIN")
-                .anyRequest().hasAuthority("MEMBER")
+                .anyRequest().hasAnyAuthority("MEMBER")
                 //.anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
