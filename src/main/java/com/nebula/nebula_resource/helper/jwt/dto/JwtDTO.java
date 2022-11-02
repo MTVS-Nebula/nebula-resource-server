@@ -1,4 +1,4 @@
-package com.nebula.nebula_resource.helper.dto;
+package com.nebula.nebula_resource.helper.jwt.dto;
 
 import java.util.List;
 

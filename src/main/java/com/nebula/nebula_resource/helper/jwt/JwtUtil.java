@@ -1,6 +1,5 @@
-package com.nebula.nebula_resource.helper;
+package com.nebula.nebula_resource.helper.jwt;
 
-import com.nebula.nebula_resource.helper.dto.JwtDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
