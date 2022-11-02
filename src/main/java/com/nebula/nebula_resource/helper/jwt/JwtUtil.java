@@ -45,7 +45,7 @@ public class JwtUtil {
     }
 
     /** token Claim 에서 권한정보 가져오기 */
-    public List<? extends GrantedAuthority> extractGrantedAuthority(String token){
+    public List<GrantedAuthority> extractGrantedAuthority(String token){
         Claims claims = extractAllClaims(token);
         if(claims.get("roles")==null){
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
