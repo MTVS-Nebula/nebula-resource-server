@@ -3,18 +3,18 @@ package com.nebula.nebula_resource.helper.api;
 import java.util.Map;
 
 public class ResultResponseMessage extends ResponseMessage{
-    private Map<String , Object> results;
+    private Object results;
 
-    public ResultResponseMessage(int httpStatus, String message, Map<String, Object> results){
+    public ResultResponseMessage(int httpStatus, String message, Object results){
         super(httpStatus, message);
         this.results = results;
     }
 
-    public Map<String, Object> getResults() {
+    public Object getResults() {
         return results;
     }
 
-    public void setResults(Map<String, Object> results) {
+    public void setResults(Object results) {
         this.results = results;
     }
 
