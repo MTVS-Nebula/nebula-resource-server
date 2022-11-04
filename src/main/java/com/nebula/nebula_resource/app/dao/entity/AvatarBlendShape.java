@@ -21,13 +21,13 @@ public class AvatarBlendShape {
     @ManyToOne
     @JoinColumn(name = "AVATAR_TEXTURE_ID")
     private AvatarTexture avatarTexture;
-    @Column(name = "NAME")
+    @Column(name = "AVATAR_NAME")
     private String name;
-    @Column(name = "TYPE")
+    @Column(name = "AVATAR_TYPE")
     private int type;
-    @Column(name = "GROUP")
+    @Column(name = "AVATAR_GROUP")
     private int group;
-    @Column(name = "VALUE")
+    @Column(name = "AVATAR_VALUE")
     private double value;
 
     public AvatarBlendShape() {
