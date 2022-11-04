@@ -1,4 +1,4 @@
-package com.nebula.nebula_resource.app.dao.entity;
+package com.nebula.nebula_resource.app.dao.entity.avatar;
 
 import javax.persistence.*;
 import java.util.List;
