@@ -1,4 +1,4 @@
-package com.nebula.nebula_resource.app.dao.entity;
+package com.nebula.nebula_resource.app.dao.entity.user;
 
 import javax.persistence.*;
 import java.sql.Date;
