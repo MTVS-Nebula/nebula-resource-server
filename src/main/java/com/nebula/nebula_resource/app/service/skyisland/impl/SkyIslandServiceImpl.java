@@ -58,7 +58,7 @@ public class SkyIslandServiceImpl implements SkyIslandService {
 
             // 해당 층수의 grid가 없을경우 해당 층까지 어레이를 추가
             for(int index = gridList.size(); index <= gridNumber; index ++){
-                gridList.add(new GridPlaceObjectDTO());
+                gridList.add(new GridPlaceObjectDTO(new ArrayList<>()));
             }
 
             // grid에 placeobject 배치를 추가
