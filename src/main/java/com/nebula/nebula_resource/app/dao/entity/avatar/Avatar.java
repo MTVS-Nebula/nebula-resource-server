@@ -1,5 +1,7 @@
-package com.nebula.nebula_resource.app.dao.entity;
+package com.nebula.nebula_resource.app.dao.entity.avatar;
 
+
+import com.nebula.nebula_resource.app.dao.entity.user.User;
 
 import javax.persistence.*;
 import java.sql.Date;

@@ -1,6 +1,6 @@
 package com.nebula.nebula_resource.app.dao.entity.skyisland;
 
-import com.nebula.nebula_resource.app.dao.entity.Avatar;
+import com.nebula.nebula_resource.app.dao.entity.avatar.Avatar;
 
 import javax.persistence.*;
 import java.util.List;

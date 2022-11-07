@@ -1,6 +1,6 @@
 package com.nebula.nebula_resource.helper.userdetails.impl;
 
-import com.nebula.nebula_resource.app.dao.entity.User;
+import com.nebula.nebula_resource.app.dao.entity.user.User;
 import com.nebula.nebula_resource.app.dao.repository.UserRepository;
 import com.nebula.nebula_resource.helper.jwt.JwtUtil;
 import com.nebula.nebula_resource.helper.userdetails.CustomUserDetailsService;
