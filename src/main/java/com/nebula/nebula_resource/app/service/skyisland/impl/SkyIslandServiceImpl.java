@@ -73,7 +73,7 @@ public class SkyIslandServiceImpl implements SkyIslandService {
     private PlaceObjectDTO convertPlaceObjectToDto(SkyIslandPlaceObject skyIslandPlaceObject){
         PlaceObjectDTO result = new PlaceObjectDTO();
         // SOname 설정
-        String soName = skyIslandPlaceObject.getId().getPlaceObject().getSoName();
+        String soName = skyIslandPlaceObject.getPlaceObject().getSoName();
         result.setPlacedObjectTypeSOName(soName);
 
         // origin(좌표) 설정

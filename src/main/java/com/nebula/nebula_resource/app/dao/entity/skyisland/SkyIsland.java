@@ -24,7 +24,7 @@ public class SkyIsland {
     @OneToOne
     @JoinColumn(name = "AVATAR_ID")
     private Avatar avatar;
-    @OneToMany(mappedBy = "id.skyIsland") // 오류는 나지만 동작은 잘함.
+    @OneToMany(mappedBy = "skyIsland") // 오류는 나지만 동작은 잘함.
     private List<SkyIslandPlaceObject> placeObjects;
 
 
