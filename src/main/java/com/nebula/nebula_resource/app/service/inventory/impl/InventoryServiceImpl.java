@@ -56,7 +56,7 @@ public class InventoryServiceImpl implements InventoryService {
         for(AvatarBuildingBundle avatarBuildingBundle : avatarBuildingBundleList){
             int index = avatarBuildingBundle.getSlotNumber();
             String name = avatarBuildingBundle.getBuildingBundle().getName();
-            int id = avatarBuildingBundle.getBuildingBundle().getId();
+            int id = avatarBuildingBundle.getBuildingBundle().getElementId();
 
 
             SlotItemDTO slotItemDTO = new SlotItemDTO(name, id, new ArrayList<>());

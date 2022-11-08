@@ -32,16 +32,19 @@ public class BuildingBundle {
     private List<BuildingBundleBuff> buildingBundleBuffs;
     @OneToMany(mappedBy = "id.buildingBundle")
     private List<BuildingBundlePlaceObject> buildingBundlePlaceObjects;
+    @Column(name = "ELEMENT_ID")
+    private Integer elementId;
 
     public BuildingBundle() {
     }
 
     public BuildingBundle(int id, String name, List<BuildingBundleBuff> buildingBundleBuffs,
-                          List<BuildingBundlePlaceObject> buildingBundlePlaceObjects) {
+                          List<BuildingBundlePlaceObject> buildingBundlePlaceObjects, int elementId) {
         this.id = id;
         this.name = name;
         this.buildingBundleBuffs = buildingBundleBuffs;
         this.buildingBundlePlaceObjects = buildingBundlePlaceObjects;
+        this.elementId = elementId;
     }
 
     public int getId() {
@@ -58,6 +61,14 @@ public class BuildingBundle {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getElementId() {
+        return elementId;
+    }
+
+    public void setElementId(int elementId) {
+        this.elementId = elementId;
     }
 
     public List<BuildingBundleBuff> getBuildingBundleBuffs() {
@@ -83,6 +94,7 @@ public class BuildingBundle {
         return "BuildingBundle{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", elementId=" + elementId +
                 ", buildingBundleBuffs=" + buildingBundleBuffs +
                 ", buildingBundlePlaceObjects=" + buildingBundlePlaceObjects +
                 '}';
