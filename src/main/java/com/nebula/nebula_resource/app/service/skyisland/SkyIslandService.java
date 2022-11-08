@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 public interface SkyIslandService {
     public void createIsland(int avatarId);
     public SkyIslandDTO loadSkyIslandById(int skyIslandId);
+    public void saveSkyIslandById(int skyIsland, IslandPlaceObjectDTO islandPlaceObjectDTO);
 }
