@@ -30,14 +30,18 @@ public class BuildingBundle {
     private String name;
     @OneToMany(mappedBy = "buildingBundle")
     private List<BuildingBundleBuff> buildingBundleBuffs;
+    @OneToMany(mappedBy = "id.buildingBundle")
+    private List<BuildingBundlePlaceObject> buildingBundlePlaceObjects;
 
     public BuildingBundle() {
     }
 
-    public BuildingBundle(int id, String name, List<BuildingBundleBuff> buildingBundleBuffs) {
+    public BuildingBundle(int id, String name, List<BuildingBundleBuff> buildingBundleBuffs,
+                          List<BuildingBundlePlaceObject> buildingBundlePlaceObjects) {
         this.id = id;
         this.name = name;
         this.buildingBundleBuffs = buildingBundleBuffs;
+        this.buildingBundlePlaceObjects = buildingBundlePlaceObjects;
     }
 
     public int getId() {
@@ -65,12 +69,22 @@ public class BuildingBundle {
         this.buildingBundleBuffs = buildingBundleBuffs;
     }
 
+    public List<BuildingBundlePlaceObject> getBuildingBundlePlaceObjects() {
+        return buildingBundlePlaceObjects;
+    }
+
+    public void setBuildingBundlePlaceObjects(
+            List<BuildingBundlePlaceObject> buildingBundlePlaceObjects) {
+        this.buildingBundlePlaceObjects = buildingBundlePlaceObjects;
+    }
+
     @Override
     public String toString() {
         return "BuildingBundle{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", buildingBundleBuffs=" + buildingBundleBuffs +
+                ", buildingBundlePlaceObjects=" + buildingBundlePlaceObjects +
                 '}';
     }
 }
