@@ -1,8 +1,10 @@
 package com.nebula.nebula_resource.app.dao.entity.avatar;
 
 
+import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarBuildingBundle;
 import com.nebula.nebula_resource.app.dao.entity.user.User;
 
+import java.util.List;
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -35,11 +37,13 @@ public class Avatar {
     private String isDeleted;
     @Column(name = "DELETED_DATE")
     private Date deletedDate;
+    @OneToMany(mappedBy = "avatar")
+    private List<AvatarBuildingBundle>  avatarBuildingBundleList;
 
     public Avatar() {
     }
 
-    public Avatar(int id, User owner, AvatarTexture texture, String avatarName, Date createdDate, String isDeleted, Date deletedDate) {
+    public Avatar(int id, User owner, AvatarTexture texture, String avatarName, Date createdDate, String isDeleted, Date deletedDate, List<AvatarBuildingBundle> avatarBuildingBundleList) {
         this.id = id;
         this.owner = owner;
         this.texture = texture;
@@ -47,6 +51,7 @@ public class Avatar {
         this.createdDate = createdDate;
         this.isDeleted = isDeleted;
         this.deletedDate = deletedDate;
+        this.avatarBuildingBundleList = avatarBuildingBundleList;
     }
 
     public int getId() {
@@ -105,6 +110,15 @@ public class Avatar {
         this.deletedDate = deletedDate;
     }
 
+    public List<AvatarBuildingBundle> getAvatarBuildingBundleList() {
+        return avatarBuildingBundleList;
+    }
+
+    public void setAvatarBuildingBundleList(
+            List<AvatarBuildingBundle> avatarBuildingBundleList) {
+        this.avatarBuildingBundleList = avatarBuildingBundleList;
+    }
+
     @Override
     public String toString() {
         return "Avatar{" +
@@ -115,6 +129,7 @@ public class Avatar {
                 ", createdDate=" + createdDate +
                 ", isDeleted='" + isDeleted + '\'' +
                 ", deletedDate=" + deletedDate +
+                ", avatarBuildingBundleList=" + avatarBuildingBundleList +
                 '}';
     }
 }
