@@ -3,27 +3,27 @@ package com.nebula.nebula_resource.app.dto.skyisland;
 import java.util.List;
 
 public class IslandPlaceObjectDTO {
-    private List<GridPlaceObjectDTO> IslandGridList;
+    private List<GridPlaceObjectDTO> islandGridList;
 
     public IslandPlaceObjectDTO() {
     }
 
     public IslandPlaceObjectDTO(List<GridPlaceObjectDTO> islandGridList) {
-        IslandGridList = islandGridList;
+        this.islandGridList = islandGridList;
     }
 
     public List<GridPlaceObjectDTO> getIslandGridList() {
-        return IslandGridList;
+        return islandGridList;
     }
 
     public void setIslandGridList(List<GridPlaceObjectDTO> islandGridList) {
-        IslandGridList = islandGridList;
+        this.islandGridList = islandGridList;
     }
 
     @Override
     public String toString() {
         return "IslandPlaceObjectDTO{" +
-                "IslandGridList=" + IslandGridList +
+                "islandGridList=" + islandGridList +
                 '}';
     }
 }
