@@ -1,24 +1,42 @@
 package com.nebula.nebula_resource.app.service.skyisland.impl;
 
+import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarBuildingBundle;
 import com.nebula.nebula_resource.app.dao.entity.item.PlaceObject;
+import com.nebula.nebula_resource.app.dao.entity.item.buildingbundle.BuildingBundlePlaceObject;
 import com.nebula.nebula_resource.app.dao.entity.skyisland.SkyIsland;
 import com.nebula.nebula_resource.app.dao.entity.skyisland.SkyIslandPlaceObject;
+import com.nebula.nebula_resource.app.dao.repository.avatar.AvatarRepository;
+import com.nebula.nebula_resource.app.dao.repository.item.PlaceObjectRepository;
+import com.nebula.nebula_resource.app.dao.repository.skyisland.SkyIslandPlaceObjectRepository;
 import com.nebula.nebula_resource.app.dao.repository.skyisland.SkyIslandRepository;
 import com.nebula.nebula_resource.app.dto.skyisland.*;
 import com.nebula.nebula_resource.app.service.skyisland.SkyIslandService;
+import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SkyIslandServiceImpl implements SkyIslandService {
     private final SkyIslandRepository skyIslandRepository;
+    private final AvatarRepository avatarRepository;
+    private final SkyIslandPlaceObjectRepository skyIslandPlaceObjectRepository;
+    private final PlaceObjectRepository placeObjectRepository;
 
     @Autowired
-    public SkyIslandServiceImpl(SkyIslandRepository skyIslandRepository) {
+    public SkyIslandServiceImpl(SkyIslandRepository skyIslandRepository, AvatarRepository avatarRepository,
+                                SkyIslandPlaceObjectRepository skyIslandPlaceObjectRepository,
+                                PlaceObjectRepository placeObjectRepository) {
         this.skyIslandRepository = skyIslandRepository;
+        this.avatarRepository = avatarRepository;
+        this.skyIslandPlaceObjectRepository = skyIslandPlaceObjectRepository;
+        this.placeObjectRepository = placeObjectRepository;
     }
 
     @Override
@@ -86,5 +104,83 @@ public class SkyIslandServiceImpl implements SkyIslandService {
         result.setDir(skyIslandPlaceObject.getDir());
 
         return result;
+    }
+
+
+    @Override
+    @Transactional
+    public void saveSkyIslandById(int skyislandId, IslandPlaceObjectDTO islandPlaceObjectDTO){
+        // 하늘 섬 정보를 받아옴
+        SkyIsland skyIsland = findSkyIslandById(skyislandId);
+        // 토큰이 하늘섬에 대한 수정 권한을 가지고 있는지 확인
+        checkSkyIslandAuthentication(skyIsland);
+        // 기존 세이브 데이터 제거
+        skyIslandPlaceObjectRepository.deleteBySkyIslandId(skyislandId);
+
+        List<GridPlaceObjectDTO> gridDTOList = islandPlaceObjectDTO.getIslandGridList();
+        int gridNum  = 0;
+        Set avatarBundleSOSet = getAvatarBundleSOSet(skyIsland);
+        for (GridPlaceObjectDTO gridDTO : gridDTOList){
+            for (PlaceObjectDTO placeObjectDTO : gridDTO.getGridPlaceObjectList()){
+                String soName = placeObjectDTO.getPlacedObjectTypeSOName();
+                checkAvatarBundle(soName, avatarBundleSOSet);
+                PlaceObject placeObject = findPlaceObjectBySOName(soName);
+
+                SkyIslandPlaceObject skyIslandPlaceObject = new SkyIslandPlaceObject(
+                        0, skyIsland, placeObject,
+                        gridNum, placeObjectDTO.getOrigin().getX(), placeObjectDTO.getOrigin().getY(),
+                        placeObjectDTO.getDir(), new Date(new java.util.Date().getTime()), null
+                );
+
+                skyIslandPlaceObjectRepository.save(skyIslandPlaceObject);
+            }
+            gridNum ++;
+        }
+    }
+
+    private SkyIsland findSkyIslandById(int id){
+        SkyIsland result = skyIslandRepository.findById(id);
+        if(result == null){
+            throw new RuntimeException("하늘섬의 아이디가 잘못되었습니다");
+        }
+        return result;
+    }
+
+    private void checkSkyIslandAuthentication(SkyIsland skyIsland){
+        String username = getContextUsername();
+        if (!skyIsland.getAvatar().getOwner().getUsername().equals(username)){
+            throw new RuntimeException("하늘섬의 주인이 아닙니다");
+        }
+    }
+
+    private PlaceObject findPlaceObjectBySOName(String soName){
+        PlaceObject placeObject = placeObjectRepository.findBySoName(soName);
+        if(placeObject == null){
+            throw new RuntimeException("SOName이 잘못되었습니다");
+        }
+        return placeObject;
+    }
+    private Set<String> getAvatarBundleSOSet (SkyIsland skyIsland){
+        Set<String> result = new HashSet<>();
+        for(AvatarBuildingBundle avatarBuildingBundle : skyIsland.getAvatar().getAvatarBuildingBundleList()){
+            for (BuildingBundlePlaceObject placeObject : avatarBuildingBundle.getBuildingBundle().getBuildingBundlePlaceObjects()){
+                result.add(placeObject.getId().getPlaceObject().getSoName());
+            }
+        }
+        return result;
+    }
+    private void checkAvatarBundle (String soName, Set<String> soStringSet){
+        if (!soStringSet.contains(soName)){
+            throw new RuntimeException(soName + "건물에 대한 번들을 소유하고 있지 않습니다");
+        }
+    }
+
+    private String getContextUsername(){
+        try {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            return username;
+        } catch (Exception e){
+            throw e;
+        }
     }
 }
