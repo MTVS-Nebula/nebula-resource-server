@@ -60,19 +60,16 @@ public class InventoryServiceImpl implements InventoryService {
             int index = avatarBuildingBundle.getSlotNumber();
             String name = avatarBuildingBundle.getBuildingBundle().getName();
             int id = avatarBuildingBundle.getBuildingBundle().getElementId();
+            int uid = avatarBuildingBundle.getId();
 
 
-            SlotItemDTO slotItemDTO = new SlotItemDTO(name, id, new ArrayList<>());
+            SlotItemDTO slotItemDTO = new SlotItemDTO(name, id, uid, new ArrayList<>());
             for (BuildingBundleBuff buildingBundleBuff : avatarBuildingBundle.getBuildingBundle().getBuildingBundleBuffs()){
-                BuffDTO buffDTO = new BuffDTO();
-                buffDTO.setStat(buildingBundleBuff.getBuffStat());
-                buffDTO.setValue(buildingBundleBuff.getBuffValue());
-                buffDTO.setMax(buildingBundleBuff.getBuffMax());
-                buffDTO.setMin(buildingBundleBuff.getBuffMin());
-
+                BuffDTO buffDTO = convertBuildingBundleBuffToDTO(buildingBundleBuff);
                 slotItemDTO.getBuffs().add(buffDTO);
             }
             slotDTOList.get(index).setItem(slotItemDTO);
+            slotDTOList.get(index).setAmount(1);
         }
 
         result.setSlots(slotDTOList);
@@ -82,7 +79,7 @@ public class InventoryServiceImpl implements InventoryService {
 
 
     private SlotDTO generateBuildindBundleEmptySlotDTO(){
-        SlotItemDTO itemDTO = new SlotItemDTO("",-1,new ArrayList<>());
+        SlotItemDTO itemDTO = new SlotItemDTO("",-1,-1, new ArrayList<>());
         SlotDTO slotDTO = new SlotDTO(BB_ALLOWED_ITEMS,itemDTO,0);
 
         return slotDTO;
@@ -113,26 +110,45 @@ public class InventoryServiceImpl implements InventoryService {
             int index = avatarClothes.getSlotNumber();
             String name = avatarClothes.getClothes().getBaseClothes().getName();
             int id = avatarClothes.getClothes().getBaseClothes().getElementId();
+            int uid = avatarClothes.getClothes().getId();
 
-            SlotItemDTO slotItemDTO = new SlotItemDTO(name, id, new ArrayList<>());
+            SlotItemDTO slotItemDTO = new SlotItemDTO(name, id,uid, new ArrayList<>());
             for (ClothesBuff clothesBuff : avatarClothes.getClothes().getBuffs()){
-                BuffDTO buffDTO = new BuffDTO();
-                buffDTO.setStat(clothesBuff.getBuffStat());
-                buffDTO.setValue(clothesBuff.getBuffValue());
-                buffDTO.setMax(clothesBuff.getBuffMax());
-                buffDTO.setMin(clothesBuff.getBuffMin());
-
+                BuffDTO buffDTO = convertClothesBuffToDTO(clothesBuff);
                 slotItemDTO.getBuffs().add(buffDTO);
             }
             slotDTOList.get(index).setItem(slotItemDTO);
+            slotDTOList.get(index).setAmount(1);
         }
         result.setSlots(slotDTOList);
 
         return result;
     }
 
+    private BuffDTO convertClothesBuffToDTO(ClothesBuff clothesBuff){
+        BuffDTO result = new BuffDTO();
+
+        result.setStat(clothesBuff.getBuffStat());
+        result.setValue(clothesBuff.getBuffValue());
+        result.setMax(clothesBuff.getBuffMax());
+        result.setMin(clothesBuff.getBuffMin());
+
+        return result;
+    }
+
+    private BuffDTO convertBuildingBundleBuffToDTO(BuildingBundleBuff buildingBundleBuff){
+        BuffDTO result = new BuffDTO();
+
+        result.setStat(buildingBundleBuff.getBuffStat());
+        result.setValue(buildingBundleBuff.getBuffValue());
+        result.setMax(buildingBundleBuff.getBuffMax());
+        result.setMin(buildingBundleBuff.getBuffMin());
+
+        return result;
+    }
+
     private SlotDTO generateClothesEmptySlotDTO(){
-        SlotItemDTO itemDTO = new SlotItemDTO("",-1,new ArrayList<>());
+        SlotItemDTO itemDTO = new SlotItemDTO("",-1,-1,new ArrayList<>());
         SlotDTO slotDTO = new SlotDTO(CL_ALLOWED_ITEMS,itemDTO,0);
 
         return slotDTO;
