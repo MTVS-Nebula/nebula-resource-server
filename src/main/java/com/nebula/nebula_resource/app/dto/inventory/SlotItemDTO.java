@@ -1,17 +1,20 @@
 package com.nebula.nebula_resource.app.dto.inventory;
 
 import java.util.List;
+import java.util.Objects;
 
 public class SlotItemDTO {
     private String Name;
     private int Id;
+    private int uniqueId;
     private List<BuffDTO> buffs;
 
     public SlotItemDTO() {
     }
 
-    public SlotItemDTO(String name, int id, List<BuffDTO> buffs) {
+    public SlotItemDTO(String name, int id, int uniqueId, List<BuffDTO> buffs) {
         Name = name;
+        this.uniqueId = uniqueId;
         Id = id;
         this.buffs = buffs;
     }
@@ -30,6 +33,14 @@ public class SlotItemDTO {
 
     public void setId(int id) {
         Id = id;
+    }
+
+    public int getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(int uniqueId) {
+        this.uniqueId = uniqueId;
     }
 
     public List<BuffDTO> getBuffs() {
