@@ -25,7 +25,7 @@ public class InventoryServiceImpl implements InventoryService {
     private final AvatarBuildingBundleRepository avatarBuildingBundleRepository;
     private final AvatarClothesRepository avatarClothesRepository;
     private static final int INVENTORY_SLOT_NUMBER = 24;
-    private static final List<Integer> BB_ALLOWED_ITEMS = List.of(0);
+    private static final List<Integer> BB_ALLOWED_ITEMS = List.of(14);
     private static final List<Integer> CL_ALLOWED_ITEMS = List.of(5,6,7,8,9,10,11,12,13,3);
 
     @Autowired
