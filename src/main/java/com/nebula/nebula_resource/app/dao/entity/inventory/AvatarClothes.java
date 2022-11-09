@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Table(name = "TBL_AVATAR_CL", schema = "avatar")
 @SequenceGenerator(
         name = "SEQ_AVATAR_CL_ID_GENERATOR",
-        sequenceName = "SEQ_AVATAR_",
+        sequenceName = "SEQ_AVATAR_CL_ID",
         initialValue = 1,
         allocationSize = 1
 )
@@ -33,7 +33,7 @@ public class AvatarClothes {
     @JoinColumn(name = "AVATAR_ID")
     private Avatar avatar;
     @ManyToOne
-    @JoinColumn(name = "CLOTHES_ID")
+    @JoinColumn(name = "CLOTHES_ID", unique = true)
     private Clothes clothes;
     @Column(name = "SLOT_NUMBER")
     private int slotNumber;
