@@ -1,7 +1,8 @@
-package com.nebula.nebula_resource.app.controller.skyisland;
+package com.nebula.nebula_resource.app.controller.inventory;
 
 import com.nebula.nebula_resource.app.dto.inventory.InventoryDTO;
-import com.nebula.nebula_resource.app.service.inventory.InventoryService;
+import com.nebula.nebula_resource.app.dto.inventory.InventoryEquipmentDTO;
+import com.nebula.nebula_resource.app.service.inventory.EquipmentService;
 import com.nebula.nebula_resource.helper.api.ResponseMessage;
 import com.nebula.nebula_resource.helper.api.ResultResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,26 +10,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("inventory")
-public class InventoryController {
-    private final InventoryService inventoryService;
-
+@RequestMapping("equipment")
+public class EquipmentController {
+    private final EquipmentService equipmentService;
     @Autowired
-    public InventoryController(InventoryService inventoryService) {
-        this.inventoryService = inventoryService;
+    public EquipmentController(EquipmentService equipmentService) {
+        this.equipmentService = equipmentService;
     }
 
-    @GetMapping("building-bundle/{avatarName}")
-    public ResponseEntity<?> getBuildingBundleInventory(@PathVariable String avatarName){
+    @GetMapping("{avatarName}")
+    public ResponseEntity<?> saveEquipment(@PathVariable String avatarName){
         try {
-            InventoryDTO result = inventoryService.getBuildingBundleInventory(avatarName);
+            InventoryDTO result = equipmentService.getEquipment(avatarName);
             return ResponseEntity
                     .ok()
-                    .body(new ResultResponseMessage(HttpStatus.OK.value(), "success", result));
+                    .body(new ResultResponseMessage(HttpStatus.CREATED.value(), "success",result));
         } catch (RuntimeException e){
             return ResponseEntity
                     .badRequest()
@@ -36,18 +38,17 @@ public class InventoryController {
         }
     }
 
-    @GetMapping("clothes/{avatarName}")
-    public ResponseEntity<?> getClothesInventory(@PathVariable String avatarName){
+    @PostMapping("{avatarName}")
+    public ResponseEntity<?> saveEquipment(@PathVariable String avatarName, @RequestBody InventoryEquipmentDTO inventoryEquipmentDTO){
         try {
-            InventoryDTO result = inventoryService.getClothesInventory(avatarName);
+            equipmentService.saveEquipment(avatarName, inventoryEquipmentDTO);
             return ResponseEntity
                     .ok()
-                    .body(new ResultResponseMessage(HttpStatus.OK.value(), "success", result));
+                    .body(new ResponseMessage(HttpStatus.CREATED.value(), "success"));
         } catch (RuntimeException e){
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
-
 }
