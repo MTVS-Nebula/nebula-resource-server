@@ -7,7 +7,6 @@ import com.nebula.nebula_resource.helper.api.ResultResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,5 +36,18 @@ public class InventoryController {
         }
     }
 
+    @GetMapping("clothes/{avatarName}")
+    public ResponseEntity<?> getClothesInventory(@PathVariable String avatarName){
+        try {
+            InventoryDTO result = inventoryService.getClothesInventory(avatarName);
+            return ResponseEntity
+                    .ok()
+                    .body(new ResultResponseMessage(HttpStatus.OK.value(), "success", result));
+        } catch (RuntimeException e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        }
+    }
 
 }
