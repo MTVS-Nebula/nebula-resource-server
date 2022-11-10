@@ -1,9 +1,11 @@
 package com.nebula.nebula_resource.app.controller.avatar;
 
+import com.nebula.nebula_resource.app.dto.avatar.AvatarCreateDTO;
 import com.nebula.nebula_resource.app.dto.avatar.AvatarDTO;
 import com.nebula.nebula_resource.app.service.avatar.AvatarService;
 import com.nebula.nebula_resource.helper.api.ResponseMessage;
 import com.nebula.nebula_resource.helper.api.ResultResponseMessage;
+import java.net.URI;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,10 +41,13 @@ public class AvatarController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createAvatar(MultipartFile image){
+    public ResponseEntity<?> createAvatar(AvatarCreateDTO createInfo){
         try {
-            avatarService.createAvatar(image);
-            return null;
+            System.out.println(createInfo);
+            avatarService.createAvatar(createInfo);
+            return ResponseEntity
+                    .created(URI.create("/avatar"))
+                    .body(new ResultResponseMessage(HttpStatus.CREATED.value(), "success",createInfo.getAvatarName()));
         } catch (RuntimeException e){
             return ResponseEntity
                     .badRequest()
