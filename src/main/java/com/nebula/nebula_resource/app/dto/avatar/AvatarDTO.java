@@ -1,162 +1,114 @@
 package com.nebula.nebula_resource.app.dto.avatar;
 
+import com.nebula.nebula_resource.app.dao.entity.avatar.Avatar;
+import com.nebula.nebula_resource.app.dao.entity.avatar.AvatarTag;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class AvatarDTO {
-    private String settingsName;
-    private Map<String, Integer> selectedElements;
-    private List<BlendShapeDTO> blendshapes;
-    private int MinLod;
-    private int MaxLod;
-    private List<Integer> SkinColor;
-    private List<Integer> EyeColor;
-    private List<Integer> HairColor;
-    private List<Integer> UnderpantsColor;
-    private List<Integer> TeethColor;
-    private List<Integer> OralCavityColor;
-    private int Height;
-    private int HeadSize;
+    private int id;
+    private String name;
+    private String imageUrl;
+    private List<String> hashTags;
+    private int skyIslandId;
+    private Map<String, Object> texture;
 
     public AvatarDTO() {
     }
 
-    public AvatarDTO(String settingsName, Map<String, Integer> selectedElements, List<BlendShapeDTO> blendshapes, int minLod, int maxLod, List<Integer> skinColor, List<Integer> eyeColor, List<Integer> hairColor, List<Integer> underpantsColor, List<Integer> teethColor, List<Integer> oralCavityColor, int height, int headSize) {
-        this.settingsName = settingsName;
-        this.selectedElements = selectedElements;
-        this.blendshapes = blendshapes;
-        MinLod = minLod;
-        MaxLod = maxLod;
-        SkinColor = skinColor;
-        EyeColor = eyeColor;
-        HairColor = hairColor;
-        UnderpantsColor = underpantsColor;
-        TeethColor = teethColor;
-        OralCavityColor = oralCavityColor;
-        Height = height;
-        HeadSize = headSize;
+    public AvatarDTO(int id, String name, String imageUrl, List<String> hashTags, int skyIslandId,
+                     Map<String , Object> texture) {
+        this.id = id;
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.hashTags = hashTags;
+        this.skyIslandId = skyIslandId;
+        this.texture = texture;
     }
 
-    public String getSettingsName() {
-        return settingsName;
+    public AvatarDTO(Avatar avatar){
+        this.id = avatar.getId();
+        this.name = avatar.getAvatarName();
+        if(avatar.getImage() != null){
+            this.imageUrl = avatar.getImage().getSavedPath();
+        }
+        this.hashTags = new ArrayList<>();
+        if (avatar.getAvatarTags() != null){
+            for (AvatarTag avatarTag : avatar.getAvatarTags()){
+                hashTags.add(avatarTag.getTag());
+            }
+        }
+        if(avatar.getAvatarTexture() != null){
+            JSONParser jsonParser = new JSONParser();
+            try {
+                Object obj = jsonParser.parse(avatar.getAvatarTexture().getTexturePlane());
+                this.texture = (Map<String, Object>) obj;
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
-    public void setSettingsName(String settingsName) {
-        this.settingsName = settingsName;
+    public int getId() {
+        return id;
     }
 
-    public Map<String, Integer> getSelectedElements() {
-        return selectedElements;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setSelectedElements(Map<String, Integer> selectedElements) {
-        this.selectedElements = selectedElements;
+    public String getName() {
+        return name;
     }
 
-    public List<BlendShapeDTO> getBlendshapes() {
-        return blendshapes;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setBlendshapes(List<BlendShapeDTO> blendshapes) {
-        this.blendshapes = blendshapes;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public int getMinLod() {
-        return MinLod;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public void setMinLod(int minLod) {
-        MinLod = minLod;
+    public List<String> getHashTags() {
+        return hashTags;
     }
 
-    public int getMaxLod() {
-        return MaxLod;
+    public void setHashTags(List<String> hashTags) {
+        this.hashTags = hashTags;
     }
 
-    public void setMaxLod(int maxLod) {
-        MaxLod = maxLod;
+    public int getSkyIslandId() {
+        return skyIslandId;
     }
 
-    public List<Integer> getSkinColor() {
-        return SkinColor;
+    public void setSkyIslandId(int skyIslandId) {
+        this.skyIslandId = skyIslandId;
     }
 
-    public void setSkinColor(List<Integer> skinColor) {
-        SkinColor = skinColor;
+    public Map<String, Object> getTexture() {
+        return texture;
     }
 
-    public List<Integer> getEyeColor() {
-        return EyeColor;
-    }
-
-    public void setEyeColor(List<Integer> eyeColor) {
-        EyeColor = eyeColor;
-    }
-
-    public List<Integer> getHairColor() {
-        return HairColor;
-    }
-
-    public void setHairColor(List<Integer> hairColor) {
-        HairColor = hairColor;
-    }
-
-    public List<Integer> getUnderpantsColor() {
-        return UnderpantsColor;
-    }
-
-    public void setUnderpantsColor(List<Integer> underpantsColor) {
-        UnderpantsColor = underpantsColor;
-    }
-
-    public List<Integer> getTeethColor() {
-        return TeethColor;
-    }
-
-    public void setTeethColor(List<Integer> teethColor) {
-        TeethColor = teethColor;
-    }
-
-    public List<Integer> getOralCavityColor() {
-        return OralCavityColor;
-    }
-
-    public void setOralCavityColor(List<Integer> oralCavityColor) {
-        OralCavityColor = oralCavityColor;
-    }
-
-    public int getHeight() {
-        return Height;
-    }
-
-    public void setHeight(int height) {
-        Height = height;
-    }
-
-    public int getHeadSize() {
-        return HeadSize;
-    }
-
-    public void setHeadSize(int headSize) {
-        HeadSize = headSize;
+    public void setTexture(Map<String, Object> texture) {
+        this.texture = texture;
     }
 
     @Override
     public String toString() {
         return "AvatarDTO{" +
-                "settingsName='" + settingsName + '\'' +
-                ", selectedElements=" + selectedElements +
-                ", blendshapes=" + blendshapes +
-                ", MinLod=" + MinLod +
-                ", MaxLod=" + MaxLod +
-                ", SkinColor=" + SkinColor +
-                ", EyeColor=" + EyeColor +
-                ", HairColor=" + HairColor +
-                ", UnderpantsColor=" + UnderpantsColor +
-                ", TeethColor=" + TeethColor +
-                ", OralCavityColor=" + OralCavityColor +
-                ", Height=" + Height +
-                ", HeadSize=" + HeadSize +
+                "id=" + id +
+                ", name=" + name +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", hashTags=" + hashTags +
+                ", skyIslandId=" + skyIslandId +
+                ", texture=" + texture +
                 '}';
     }
 }
