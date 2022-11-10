@@ -1,6 +1,7 @@
 package com.nebula.nebula_resource.app.dao.entity.avatar;
 
 
+import com.nebula.nebula_resource.app.dao.entity.file.Attachment;
 import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarBuildingBundle;
 import com.nebula.nebula_resource.app.dao.entity.user.User;
 
@@ -29,7 +30,7 @@ public class Avatar {
     private User owner;
     @OneToOne(mappedBy = "avatar")
     private AvatarTexture texture;
-    @Column(name = "NAME")
+    @Column(name = "NAME", unique = true)
     private String avatarName;
     @Column(name = "CREATED_DATE")
     private Date createdDate;
@@ -37,13 +38,20 @@ public class Avatar {
     private String isDeleted;
     @Column(name = "DELETED_DATE")
     private Date deletedDate;
+    @OneToOne
+    private Attachment image;
     @OneToMany(mappedBy = "avatar")
     private List<AvatarBuildingBundle>  avatarBuildingBundleList;
+    @OneToOne(mappedBy = "avatar")
+    private AvatarTexturePlane avatarTexture;
+    @OneToMany(mappedBy = "avatar")
+    private List<AvatarTag> avatarTagList;
 
     public Avatar() {
     }
 
-    public Avatar(int id, User owner, AvatarTexture texture, String avatarName, Date createdDate, String isDeleted, Date deletedDate, List<AvatarBuildingBundle> avatarBuildingBundleList) {
+    public Avatar(int id, User owner, AvatarTexture texture, String avatarName, Date createdDate, String isDeleted, Date deletedDate, Attachment image, List<AvatarBuildingBundle> avatarBuildingBundleList, AvatarTexturePlane avatarTexture,
+                  List<AvatarTag> avatarTags) {
         this.id = id;
         this.owner = owner;
         this.texture = texture;
@@ -51,7 +59,10 @@ public class Avatar {
         this.createdDate = createdDate;
         this.isDeleted = isDeleted;
         this.deletedDate = deletedDate;
+        this.image = image;
         this.avatarBuildingBundleList = avatarBuildingBundleList;
+        this.avatarTexture = avatarTexture;
+        this.avatarTagList = avatarTags;
     }
 
     public int getId() {
@@ -110,6 +121,14 @@ public class Avatar {
         this.deletedDate = deletedDate;
     }
 
+    public Attachment getImage() {
+        return image;
+    }
+
+    public void setImage(Attachment image) {
+        this.image = image;
+    }
+
     public List<AvatarBuildingBundle> getAvatarBuildingBundleList() {
         return avatarBuildingBundleList;
     }
@@ -117,6 +136,22 @@ public class Avatar {
     public void setAvatarBuildingBundleList(
             List<AvatarBuildingBundle> avatarBuildingBundleList) {
         this.avatarBuildingBundleList = avatarBuildingBundleList;
+    }
+
+    public AvatarTexturePlane getAvatarTexture() {
+        return avatarTexture;
+    }
+
+    public void setAvatarTexture(AvatarTexturePlane avatarTexture) {
+        this.avatarTexture = avatarTexture;
+    }
+
+    public List<AvatarTag> getAvatarTags() {
+        return avatarTagList;
+    }
+
+    public void setAvatarTags(List<AvatarTag> avatarTags) {
+        this.avatarTagList = avatarTags;
     }
 
     @Override
@@ -129,7 +164,10 @@ public class Avatar {
                 ", createdDate=" + createdDate +
                 ", isDeleted='" + isDeleted + '\'' +
                 ", deletedDate=" + deletedDate +
+                ", image=" + image +
                 ", avatarBuildingBundleList=" + avatarBuildingBundleList +
+                ", avatarTexture=" + avatarTexture +
+                ", avatarTags=" + avatarTagList +
                 '}';
     }
 }
