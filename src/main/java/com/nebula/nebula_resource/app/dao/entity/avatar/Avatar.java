@@ -3,6 +3,7 @@ package com.nebula.nebula_resource.app.dao.entity.avatar;
 
 import com.nebula.nebula_resource.app.dao.entity.file.Attachment;
 import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarBuildingBundle;
+import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarEquipment;
 import com.nebula.nebula_resource.app.dao.entity.user.User;
 
 import java.util.List;
@@ -45,7 +46,9 @@ public class Avatar {
     @OneToOne(mappedBy = "avatar")
     private AvatarTexturePlane avatarTexture;
     @OneToMany(mappedBy = "avatar")
-    private List<AvatarTag> avatarTagList;
+    private List<AvatarTag> avatarTags;
+    @OneToMany(mappedBy = "avatar")
+    private List<AvatarEquipment> avatarEquipmentList;
 
     public Avatar() {
     }
@@ -62,7 +65,7 @@ public class Avatar {
         this.image = image;
         this.avatarBuildingBundleList = avatarBuildingBundleList;
         this.avatarTexture = avatarTexture;
-        this.avatarTagList = avatarTags;
+        this.avatarTags = avatarTags;
     }
 
     public int getId() {
@@ -147,11 +150,20 @@ public class Avatar {
     }
 
     public List<AvatarTag> getAvatarTags() {
-        return avatarTagList;
+        return avatarTags;
     }
 
     public void setAvatarTags(List<AvatarTag> avatarTags) {
-        this.avatarTagList = avatarTags;
+        this.avatarTags = avatarTags;
+    }
+
+    public List<AvatarEquipment> getAvatarEquipmentList() {
+        return avatarEquipmentList;
+    }
+
+    public void setAvatarEquipmentList(
+            List<AvatarEquipment> avatarEquipmentList) {
+        this.avatarEquipmentList = avatarEquipmentList;
     }
 
     @Override
@@ -167,7 +179,8 @@ public class Avatar {
                 ", image=" + image +
                 ", avatarBuildingBundleList=" + avatarBuildingBundleList +
                 ", avatarTexture=" + avatarTexture +
-                ", avatarTags=" + avatarTagList +
+                ", avatarTags=" + avatarTags +
+                ", avatarEquipments=" + avatarEquipmentList +
                 '}';
     }
 }
