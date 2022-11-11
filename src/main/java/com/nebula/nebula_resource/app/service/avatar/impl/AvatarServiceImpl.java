@@ -7,6 +7,7 @@ import com.nebula.nebula_resource.app.dao.entity.file.Attachment;
 import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarBuildingBundle;
 import com.nebula.nebula_resource.app.dao.entity.item.buildingbundle.BuildingBundle;
 import com.nebula.nebula_resource.app.dao.entity.skyisland.SkyIsland;
+import com.nebula.nebula_resource.app.dao.entity.skyisland.SkyIslandCoordinate;
 import com.nebula.nebula_resource.app.dao.entity.user.User;
 import com.nebula.nebula_resource.app.dao.repository.UserRepository;
 import com.nebula.nebula_resource.app.dao.repository.avatar.AvatarRepository;
@@ -14,6 +15,7 @@ import com.nebula.nebula_resource.app.dao.repository.avatar.AvatarTagRepository;
 import com.nebula.nebula_resource.app.dao.repository.avatar.AvatarTexturePlaneRepository;
 import com.nebula.nebula_resource.app.dao.repository.inventory.AvatarBuildingBundleRepository;
 import com.nebula.nebula_resource.app.dao.repository.item.BuildingBundleRepository;
+import com.nebula.nebula_resource.app.dao.repository.skyisland.SkyIslandCoordinateRepository;
 import com.nebula.nebula_resource.app.dao.repository.skyisland.SkyIslandRepository;
 import com.nebula.nebula_resource.app.dto.avatar.AvatarAppearanceVO;
 import com.nebula.nebula_resource.app.dto.avatar.AvatarCreateDTO;
@@ -40,13 +42,15 @@ public class AvatarServiceImpl implements AvatarService {
     private final BuildingBundleRepository buildingBundleRepository;
     private final AvatarTagRepository avatarTagRepository;
     private final AvatarTexturePlaneRepository avatarTexturePlaneRepository;
+    private final SkyIslandCoordinateRepository skyIslandCoordinateRepository;
 
     @Autowired
     public AvatarServiceImpl(FileService fileService, AvatarRepository avatarRepository,
                              SkyIslandRepository skyIslandRepository, UserRepository userRepository,
                              AvatarBuildingBundleRepository avatarBuildingBundleRepository,
                              BuildingBundleRepository buildingBundleRepository, AvatarTagRepository avatarTagRepository,
-                             AvatarTexturePlaneRepository avatarTexturePlaneRepository) {
+                             AvatarTexturePlaneRepository avatarTexturePlaneRepository,
+                             SkyIslandCoordinateRepository skyIslandCoordinateRepository) {
         this.fileService = fileService;
         this.avatarRepository = avatarRepository;
         this.skyIslandRepository = skyIslandRepository;
@@ -55,6 +59,7 @@ public class AvatarServiceImpl implements AvatarService {
         this.buildingBundleRepository = buildingBundleRepository;
         this.avatarTagRepository = avatarTagRepository;
         this.avatarTexturePlaneRepository = avatarTexturePlaneRepository;
+        this.skyIslandCoordinateRepository = skyIslandCoordinateRepository;
     }
 
     @Override
@@ -94,6 +99,10 @@ public class AvatarServiceImpl implements AvatarService {
         generateBasicBundleList(avatar);
         SkyIsland skyIsland = new SkyIsland(0, avatar, null);
         skyIslandRepository.save(skyIsland);
+        SkyIslandCoordinate skyIslandCoordinate = new SkyIslandCoordinate(skyIsland,0,0,0,"default","default");
+        skyIslandCoordinateRepository.save(skyIslandCoordinate);
+
+        sendRefreshRequest();
     }
 
     @Override
@@ -135,6 +144,10 @@ public class AvatarServiceImpl implements AvatarService {
         }
         checkAvatarAuthentication(avatar);
         avatarRepository.delete(avatar);
+    }
+
+    private void sendRefreshRequest(){
+
     }
 
     private void checkAvatarAuthentication(Avatar avatar){

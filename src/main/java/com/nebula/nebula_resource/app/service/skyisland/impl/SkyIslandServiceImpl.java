@@ -4,15 +4,19 @@ import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarBuildingBundle;
 import com.nebula.nebula_resource.app.dao.entity.item.PlaceObject;
 import com.nebula.nebula_resource.app.dao.entity.item.buildingbundle.BuildingBundlePlaceObject;
 import com.nebula.nebula_resource.app.dao.entity.skyisland.SkyIsland;
+import com.nebula.nebula_resource.app.dao.entity.skyisland.SkyIslandCoordinate;
 import com.nebula.nebula_resource.app.dao.entity.skyisland.SkyIslandPlaceObject;
 import com.nebula.nebula_resource.app.dao.repository.avatar.AvatarRepository;
 import com.nebula.nebula_resource.app.dao.repository.item.PlaceObjectRepository;
+import com.nebula.nebula_resource.app.dao.repository.skyisland.SkyIslandCoordinateRepository;
 import com.nebula.nebula_resource.app.dao.repository.skyisland.SkyIslandPlaceObjectRepository;
 import com.nebula.nebula_resource.app.dao.repository.skyisland.SkyIslandRepository;
 import com.nebula.nebula_resource.app.dto.skyisland.*;
 import com.nebula.nebula_resource.app.service.skyisland.SkyIslandService;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,15 +32,18 @@ public class SkyIslandServiceImpl implements SkyIslandService {
     private final AvatarRepository avatarRepository;
     private final SkyIslandPlaceObjectRepository skyIslandPlaceObjectRepository;
     private final PlaceObjectRepository placeObjectRepository;
+    private final SkyIslandCoordinateRepository skyIslandCoordinateRepository;
 
     @Autowired
     public SkyIslandServiceImpl(SkyIslandRepository skyIslandRepository, AvatarRepository avatarRepository,
                                 SkyIslandPlaceObjectRepository skyIslandPlaceObjectRepository,
-                                PlaceObjectRepository placeObjectRepository) {
+                                PlaceObjectRepository placeObjectRepository,
+                                SkyIslandCoordinateRepository skyIslandCoordinateRepository) {
         this.skyIslandRepository = skyIslandRepository;
         this.avatarRepository = avatarRepository;
         this.skyIslandPlaceObjectRepository = skyIslandPlaceObjectRepository;
         this.placeObjectRepository = placeObjectRepository;
+        this.skyIslandCoordinateRepository = skyIslandCoordinateRepository;
     }
 
     @Override
@@ -136,6 +143,24 @@ public class SkyIslandServiceImpl implements SkyIslandService {
             }
             gridNum ++;
         }
+    }
+
+    @Override
+    public Map<Integer, SkyIslandCoordinateDTO> getSkyIslandMap() {
+        Map<Integer, SkyIslandCoordinateDTO> result = new HashMap<>();
+        List<SkyIslandCoordinate> skyIslandCoordinateList = skyIslandCoordinateRepository.findAllBy();
+        for (SkyIslandCoordinate skyIslandCoordinate : skyIslandCoordinateList){
+            int id = skyIslandCoordinate.getSkyIsland().getId();
+            double pc1 = skyIslandCoordinate.getPc1();
+            double pc2 = skyIslandCoordinate.getPc2();
+            double pc3 = skyIslandCoordinate.getPc3();
+            String keyword1 = skyIslandCoordinate.getKeyword1();
+            String keyword2 = skyIslandCoordinate.getKeyword2();
+            SkyIslandCoordinateDTO dto = new SkyIslandCoordinateDTO(pc1,pc2,pc3,keyword1,keyword2);
+
+            result.put(id,dto);
+        }
+        return result;
     }
 
     private SkyIsland findSkyIslandById(int id){
