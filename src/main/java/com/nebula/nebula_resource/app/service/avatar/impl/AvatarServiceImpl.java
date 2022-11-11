@@ -99,15 +99,12 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public void saveTexture(String avatarName, Map<String, Object> textureMap) {
-        // 아바타 소유 권한 확인
-        String username = getContextUsername();
         Avatar avatar = avatarRepository.findByAvatarName(avatarName);
         if(avatar == null){
             throw new RuntimeException("존재하지 않는 아바타 입니다.");
         }
-        if(!avatar.getOwner().getUsername().equals(username)){
-            throw new RuntimeException(avatarName + " 에 대한 소유권이 없습니다.");
-        }
+        // 아바타 소유 권한 확인
+        checkAvatarAuthentication(avatar);
 
         //텍스처 파싱
         JSONObject jsonObject = new JSONObject(textureMap);
@@ -116,6 +113,13 @@ public class AvatarServiceImpl implements AvatarService {
         //엔티티 객체를 만들어 텍스처 저장
         AvatarTexturePlane avatarTexturePlane = new AvatarTexturePlane(0,planeTexture,avatar);
         avatarTexturePlaneRepository.save(avatarTexturePlane);
+    }
+
+    private void checkAvatarAuthentication(Avatar avatar){
+        String username = getContextUsername();
+        if(!avatar.getOwner().getUsername().equals(username)){
+            throw new RuntimeException(avatar.getAvatarName() + " 에 대한 소유권이 없습니다.");
+        }
     }
 
     private void generateBasicBundleList(Avatar avatar){
