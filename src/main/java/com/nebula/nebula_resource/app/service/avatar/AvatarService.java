@@ -13,4 +13,5 @@ public interface AvatarService {
     void createAvatar(AvatarCreateDTO avatarCreateDTO);
     void saveTexture(String avatarName, Map<String , Object> textureMap);
     AvatarAppearanceVO getAvatarAppearance(String avatarName);
+    void deleteAvatar(String avatarName);
 }
