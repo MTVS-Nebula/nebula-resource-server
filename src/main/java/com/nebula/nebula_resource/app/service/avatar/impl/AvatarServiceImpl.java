@@ -15,6 +15,7 @@ import com.nebula.nebula_resource.app.dao.repository.avatar.AvatarTexturePlaneRe
 import com.nebula.nebula_resource.app.dao.repository.inventory.AvatarBuildingBundleRepository;
 import com.nebula.nebula_resource.app.dao.repository.item.BuildingBundleRepository;
 import com.nebula.nebula_resource.app.dao.repository.skyisland.SkyIslandRepository;
+import com.nebula.nebula_resource.app.dto.avatar.AvatarAppearanceVO;
 import com.nebula.nebula_resource.app.dto.avatar.AvatarCreateDTO;
 import com.nebula.nebula_resource.app.dto.avatar.AvatarDTO;
 import com.nebula.nebula_resource.app.service.avatar.AvatarService;
@@ -98,6 +99,7 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     @Override
+    @Transactional
     public void saveTexture(String avatarName, Map<String, Object> textureMap) {
         Avatar avatar = avatarRepository.findByAvatarName(avatarName);
         if(avatar == null){
@@ -113,6 +115,18 @@ public class AvatarServiceImpl implements AvatarService {
         //엔티티 객체를 만들어 텍스처 저장
         AvatarTexturePlane avatarTexturePlane = new AvatarTexturePlane(0,planeTexture,avatar);
         avatarTexturePlaneRepository.save(avatarTexturePlane);
+    }
+
+    @Override
+    public AvatarAppearanceVO getAvatarAppearance(String avatarName) {
+        Avatar avatar = avatarRepository.findByAvatarName(avatarName);
+        if(avatar == null){
+            throw new RuntimeException("존재하지 않는 아바타 입니다.");
+        }
+
+        AvatarAppearanceVO result = new AvatarAppearanceVO(avatar);
+
+        return result;
     }
 
     private void checkAvatarAuthentication(Avatar avatar){
