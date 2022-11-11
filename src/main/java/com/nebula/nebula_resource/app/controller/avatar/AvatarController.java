@@ -12,6 +12,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -93,6 +94,20 @@ public class AvatarController {
             return ResponseEntity
                     .created(URI.create("/avatar/texture"))
                     .body(new ResultResponseMessage(HttpStatus.CREATED.value(), "success", result));
+        } catch (RuntimeException e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("delete/{avatarName}")
+    public ResponseEntity<?> deleteAvatar(@PathVariable String avatarName){
+        try {
+            avatarService.deleteAvatar(avatarName);
+            return ResponseEntity
+                    .created(URI.create("/avatar/texture"))
+                    .body(new ResponseMessage(HttpStatus.CREATED.value(), "success"));
         } catch (RuntimeException e){
             return ResponseEntity
                     .badRequest()

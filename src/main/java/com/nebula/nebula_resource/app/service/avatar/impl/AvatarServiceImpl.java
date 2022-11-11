@@ -81,13 +81,11 @@ public class AvatarServiceImpl implements AvatarService {
     public void createAvatar(AvatarCreateDTO avatarCreateDTO) {
         String username = getContextUsername();
         User user = userRepository.findByUsername(username);
-
         if(avatarRepository.countByOwnerAndIsDeleted(user, "N") >= 3){
             throw new RuntimeException("이미 3개의 아바타를 소유하고 있습니다.");
         }
 
         Attachment image = fileService.uploadFile("profile", avatarCreateDTO.getImage());
-
         Avatar avatar = new Avatar(0, user, null, avatarCreateDTO.getAvatarName(),
                 new Date(new java.util.Date().getTime()),
                 "N",null,image,null,null,null);
@@ -127,6 +125,16 @@ public class AvatarServiceImpl implements AvatarService {
         AvatarAppearanceVO result = new AvatarAppearanceVO(avatar);
 
         return result;
+    }
+
+    @Transactional
+    public void deleteAvatar(String avatarName){
+        Avatar avatar = avatarRepository.findByAvatarName(avatarName);
+        if(avatar == null){
+            throw new RuntimeException("존재하지 않는 아바타 입니다.");
+        }
+        checkAvatarAuthentication(avatar);
+        avatarRepository.delete(avatar);
     }
 
     private void checkAvatarAuthentication(Avatar avatar){
