@@ -2,6 +2,7 @@ package com.nebula.nebula_resource.app.controller.skyisland;
 
 import com.nebula.nebula_resource.app.dto.skyisland.GridPlaceObjectDTO;
 import com.nebula.nebula_resource.app.dto.skyisland.IslandPlaceObjectDTO;
+import com.nebula.nebula_resource.app.dto.skyisland.SkyIslandCoordinateDTO;
 import com.nebula.nebula_resource.app.dto.skyisland.SkyIslandDTO;
 import com.nebula.nebula_resource.app.service.skyisland.SkyIslandService;
 import com.nebula.nebula_resource.helper.api.ResponseMessage;
@@ -52,6 +53,20 @@ public class SkyIslandController {
             return ResponseEntity
                     .created(URI.create("/skyisland"))
                     .body(new ResponseMessage(HttpStatus.OK.value(), "success"));
+        } catch (RuntimeException e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getSkyIslandMap(){
+        try {
+            Map<Integer, SkyIslandCoordinateDTO> result = skyIslandService.getSkyIslandMap();
+            return ResponseEntity
+                    .created(URI.create("/skyisland"))
+                    .body(new ResultResponseMessage(HttpStatus.OK.value(), "success", result));
         } catch (RuntimeException e){
             return ResponseEntity
                     .badRequest()
