@@ -1,5 +1,6 @@
 package com.nebula.nebula_resource.app.controller.avatar;
 
+import com.nebula.nebula_resource.app.dto.avatar.AvatarAppearanceVO;
 import com.nebula.nebula_resource.app.dto.avatar.AvatarCreateDTO;
 import com.nebula.nebula_resource.app.dto.avatar.AvatarDTO;
 import com.nebula.nebula_resource.app.service.avatar.AvatarService;
@@ -78,6 +79,20 @@ public class AvatarController {
             return ResponseEntity
                     .created(URI.create("/avatar/texture"))
                     .body(new ResponseMessage(HttpStatus.CREATED.value(), "success"));
+        } catch (RuntimeException e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        }
+    }
+
+    @GetMapping("appearance/{avatarName}")
+    public ResponseEntity<?> getAvatarAppearance(@PathVariable String avatarName){
+        try {
+            AvatarAppearanceVO result = avatarService.getAvatarAppearance(avatarName);
+            return ResponseEntity
+                    .created(URI.create("/avatar/texture"))
+                    .body(new ResultResponseMessage(HttpStatus.CREATED.value(), "success", result));
         } catch (RuntimeException e){
             return ResponseEntity
                     .badRequest()
