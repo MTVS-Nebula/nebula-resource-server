@@ -156,7 +156,8 @@ public class SkyIslandServiceImpl implements SkyIslandService {
             double pc3 = skyIslandCoordinate.getPc3();
             String keyword1 = skyIslandCoordinate.getKeyword1();
             String keyword2 = skyIslandCoordinate.getKeyword2();
-            SkyIslandCoordinateDTO dto = new SkyIslandCoordinateDTO(pc1,pc2,pc3,keyword1,keyword2);
+            String imageUrl = skyIslandCoordinate.getSkyIsland().getAvatar().getImage().getSavedPath();
+            SkyIslandCoordinateDTO dto = new SkyIslandCoordinateDTO(pc1,pc2,pc3,keyword1,keyword2,imageUrl);
 
             result.put(id,dto);
         }
