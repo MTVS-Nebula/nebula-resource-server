@@ -1,6 +1,7 @@
 package com.nebula.nebula_resource.app.dto.skyisland;
 
 public class SkyIslandCoordinateDTO {
+    private String avatarName;
     private double pc1;
     private double pc2;
     private double pc3;
@@ -11,7 +12,8 @@ public class SkyIslandCoordinateDTO {
     public SkyIslandCoordinateDTO() {
     }
 
-    public SkyIslandCoordinateDTO(double pc1, double pc2, double pc3, String keyword1, String keyword2, String image_url) {
+    public SkyIslandCoordinateDTO(String avatarName, double pc1, double pc2, double pc3, String keyword1, String keyword2, String image_url) {
+        this.avatarName = avatarName;
         this.pc1 = pc1;
         this.pc2 = pc2;
         this.pc3 = pc3;
@@ -68,14 +70,24 @@ public class SkyIslandCoordinateDTO {
         this.image_url = image_url;
     }
 
+    public String getAvatarName() {
+        return avatarName;
+    }
+
+    public void setAvatarName(String avatarName) {
+        this.avatarName = avatarName;
+    }
+
     @Override
     public String toString() {
         return "SkyIslandCoordinateDTO{" +
-                "pc1=" + pc1 +
+                "avatarName='" + avatarName + '\'' +
+                ", pc1=" + pc1 +
                 ", pc2=" + pc2 +
                 ", pc3=" + pc3 +
                 ", keyword1='" + keyword1 + '\'' +
                 ", keyword2='" + keyword2 + '\'' +
+                ", image_url='" + image_url + '\'' +
                 '}';
     }
 }
