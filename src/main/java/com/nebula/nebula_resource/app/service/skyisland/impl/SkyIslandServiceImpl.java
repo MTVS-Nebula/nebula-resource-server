@@ -1,5 +1,6 @@
 package com.nebula.nebula_resource.app.service.skyisland.impl;
 
+import com.nebula.nebula_resource.app.dao.entity.avatar.Avatar;
 import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarBuildingBundle;
 import com.nebula.nebula_resource.app.dao.entity.item.PlaceObject;
 import com.nebula.nebula_resource.app.dao.entity.item.buildingbundle.BuildingBundlePlaceObject;
@@ -150,14 +151,17 @@ public class SkyIslandServiceImpl implements SkyIslandService {
         Map<Integer, SkyIslandCoordinateDTO> result = new HashMap<>();
         List<SkyIslandCoordinate> skyIslandCoordinateList = skyIslandCoordinateRepository.findAllBy();
         for (SkyIslandCoordinate skyIslandCoordinate : skyIslandCoordinateList){
-            int id = skyIslandCoordinate.getSkyIsland().getId();
+            SkyIsland skyIsland = skyIslandCoordinate.getSkyIsland();
+            Avatar avatar = skyIsland.getAvatar();
+            int id = skyIsland.getId();
             double pc1 = skyIslandCoordinate.getPc1();
             double pc2 = skyIslandCoordinate.getPc2();
             double pc3 = skyIslandCoordinate.getPc3();
             String keyword1 = skyIslandCoordinate.getKeyword1();
             String keyword2 = skyIslandCoordinate.getKeyword2();
-            String imageUrl = skyIslandCoordinate.getSkyIsland().getAvatar().getImage().getSavedPath();
-            SkyIslandCoordinateDTO dto = new SkyIslandCoordinateDTO(pc1,pc2,pc3,keyword1,keyword2,imageUrl);
+            String avatarName = avatar.getAvatarName();
+            String imageUrl = avatar.getImage().getSavedPath();
+            SkyIslandCoordinateDTO dto = new SkyIslandCoordinateDTO(avatarName,pc1,pc2,pc3,keyword1,keyword2,imageUrl);
 
             result.put(id,dto);
         }
