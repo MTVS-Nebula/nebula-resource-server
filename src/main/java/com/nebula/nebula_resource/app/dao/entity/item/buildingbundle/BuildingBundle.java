@@ -34,17 +34,20 @@ public class BuildingBundle {
     private List<BuildingBundlePlaceObject> buildingBundlePlaceObjects;
     @Column(name = "ELEMENT_ID")
     private Integer elementId;
+    @Column(name = "PURCHASE_AMOUNT")
+    private Integer purchaseAmount;
 
     public BuildingBundle() {
     }
 
     public BuildingBundle(int id, String name, List<BuildingBundleBuff> buildingBundleBuffs,
-                          List<BuildingBundlePlaceObject> buildingBundlePlaceObjects, int elementId) {
+                          List<BuildingBundlePlaceObject> buildingBundlePlaceObjects, int elementId, int purchaseAmount) {
         this.id = id;
         this.name = name;
         this.buildingBundleBuffs = buildingBundleBuffs;
         this.buildingBundlePlaceObjects = buildingBundlePlaceObjects;
         this.elementId = elementId;
+        this.purchaseAmount = purchaseAmount;
     }
 
     public int getId() {
@@ -69,6 +72,14 @@ public class BuildingBundle {
 
     public void setElementId(int elementId) {
         this.elementId = elementId;
+    }
+
+    public Integer getPurchaseAmount() {
+        return purchaseAmount;
+    }
+
+    public void setPurchaseAmount(Integer purchaseAmount) {
+        this.purchaseAmount = purchaseAmount;
     }
 
     public List<BuildingBundleBuff> getBuildingBundleBuffs() {
