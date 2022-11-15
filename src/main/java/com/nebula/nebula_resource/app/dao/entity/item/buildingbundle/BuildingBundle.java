@@ -36,6 +36,8 @@ public class BuildingBundle {
     private Integer elementId;
     @Column(name = "PURCHASE_AMOUNT")
     private Integer purchaseAmount;
+    @Column(name = "FIX_SLOT_NUMBER")
+    private Integer fixSlotNumber;
 
     public BuildingBundle() {
     }
@@ -80,6 +82,14 @@ public class BuildingBundle {
 
     public void setPurchaseAmount(Integer purchaseAmount) {
         this.purchaseAmount = purchaseAmount;
+    }
+
+    public Integer getFixSlotNumber() {
+        return fixSlotNumber;
+    }
+
+    public void setFixSlotNumber(Integer fixSlotNumber) {
+        this.fixSlotNumber = fixSlotNumber;
     }
 
     public List<BuildingBundleBuff> getBuildingBundleBuffs() {
