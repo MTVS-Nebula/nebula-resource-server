@@ -6,4 +6,5 @@ public interface InventoryService {
 
     InventoryDTO getBuildingBundleInventory(String avatarName);
     InventoryDTO getClothesInventory(String avatarName);
+    int getMoney(String avatarName);
 }

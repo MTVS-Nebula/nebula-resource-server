@@ -13,6 +13,7 @@ import com.nebula.nebula_resource.app.dto.inventory.InventoryDTO;
 import com.nebula.nebula_resource.app.dto.inventory.SlotDTO;
 import com.nebula.nebula_resource.app.dto.inventory.SlotItemDTO;
 import com.nebula.nebula_resource.app.service.inventory.InventoryService;
+import com.nebula.nebula_resource.helper.permission.PermissionChecker;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,13 @@ public class InventoryServiceImpl implements InventoryService {
         InventoryDTO result = convertAvatarBuildingBundleToDTO(avatarBuildingBundleList);
 
         return result;
+    }
+
+    @Override
+    public int getMoney(String avatarName){
+        Avatar avatar = avatarRepository.findByAvatarName(avatarName);
+        PermissionChecker.checkAvatarPermission(avatar);
+        return avatar.getMoney();
     }
 
     private InventoryDTO convertAvatarBuildingBundleToDTO(List<AvatarBuildingBundle> avatarBuildingBundleList){
