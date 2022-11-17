@@ -33,6 +33,8 @@ public class Avatar {
     private AvatarTexture texture;
     @Column(name = "NAME", unique = true)
     private String avatarName;
+    @Column(name = "MONEY")
+    private int money;
     @Column(name = "CREATED_DATE")
     private Date createdDate;
     @Column(name = "IS_DELETED")
@@ -59,6 +61,7 @@ public class Avatar {
         this.owner = owner;
         this.texture = texture;
         this.avatarName = avatarName;
+        this.money = 0;
         this.createdDate = createdDate;
         this.isDeleted = isDeleted;
         this.deletedDate = deletedDate;
@@ -98,6 +101,14 @@ public class Avatar {
 
     public void setAvatarName(String avatarName) {
         this.avatarName = avatarName;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 
     public Date getCreatedDate() {

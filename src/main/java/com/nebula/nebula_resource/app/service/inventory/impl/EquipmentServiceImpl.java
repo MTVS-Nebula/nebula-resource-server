@@ -153,6 +153,11 @@ public class EquipmentServiceImpl implements EquipmentService {
         //슬롯 초기화
         List<SlotDTO> slotDTOList = generateEmptySlotList();
 
+        if (avatarEquipmentList == null){
+            result.setSlots(slotDTOList);
+            return result;
+        }
+
         //슬롯에 아이템 세팅
         for (AvatarEquipment avatarEquipment : avatarEquipmentList){
             int index = avatarEquipment.getSlotNumber();

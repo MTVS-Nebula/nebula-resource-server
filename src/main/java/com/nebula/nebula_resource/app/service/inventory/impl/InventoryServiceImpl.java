@@ -105,6 +105,11 @@ public class InventoryServiceImpl implements InventoryService {
             slotDTOList.add(generateClothesEmptySlotDTO());
         }
 
+        if (avatarClothesList == null){
+            result.setSlots(slotDTOList);
+            return result;
+        }
+
         //슬롯에 아이템 세팅
         for (AvatarClothes avatarClothes : avatarClothesList){
             int index = avatarClothes.getSlotNumber();
