@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BuildingBundleRepository extends JpaRepository<BuildingBundle, Integer> {
     BuildingBundle findById(int id);
+    BuildingBundle findByName(String name);
 }

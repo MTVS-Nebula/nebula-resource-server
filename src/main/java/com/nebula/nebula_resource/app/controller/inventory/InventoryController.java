@@ -4,6 +4,8 @@ import com.nebula.nebula_resource.app.dto.inventory.InventoryDTO;
 import com.nebula.nebula_resource.app.service.inventory.InventoryService;
 import com.nebula.nebula_resource.helper.api.ResponseMessage;
 import com.nebula.nebula_resource.helper.api.ResultResponseMessage;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +45,22 @@ public class InventoryController {
             return ResponseEntity
                     .ok()
                     .body(new ResultResponseMessage(HttpStatus.OK.value(), "success", result));
+        } catch (RuntimeException e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        }
+    }
+
+    @GetMapping("money/{avatarName}")
+    public ResponseEntity<?> getMoney(@PathVariable String avatarName){
+        try {
+            Map<String , Object> resultMap = new HashMap<>();
+            int money = inventoryService.getMoney(avatarName);
+            resultMap.put("money", money);
+            return ResponseEntity
+                    .ok()
+                    .body(new ResultResponseMessage(HttpStatus.OK.value(), "success", resultMap));
         } catch (RuntimeException e){
             return ResponseEntity
                     .badRequest()
