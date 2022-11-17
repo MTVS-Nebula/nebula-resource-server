@@ -200,13 +200,13 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     private List<SlotDTO> generateEmptySlotList(){
         List<SlotDTO> slotDTOList = new ArrayList<>();
-        slotDTOList.add(generateEmptySlotDTO(List.of(7)));
-        slotDTOList.add(generateEmptySlotDTO(List.of(6)));
         slotDTOList.add(generateEmptySlotDTO(List.of(8)));
+        slotDTOList.add(generateEmptySlotDTO(List.of(7)));
         slotDTOList.add(generateEmptySlotDTO(List.of(9)));
         slotDTOList.add(generateEmptySlotDTO(List.of(10)));
         slotDTOList.add(generateEmptySlotDTO(List.of(11)));
         slotDTOList.add(generateEmptySlotDTO(List.of(12)));
+        slotDTOList.add(generateEmptySlotDTO(List.of(13)));
 
         return slotDTOList;
     }
