@@ -83,11 +83,15 @@ public class EquipmentServiceImpl implements EquipmentService {
         int slotIndex = 0;
         for (SlotDTO slotDTO : clothesInventory.getSlots()){
             SlotItemDTO slotItem = slotDTO.getItem();
-            if(slotDTO.getAmount() == 0 || slotItem.getId() == -1){
+            if(slotDTO.getAmount() == 0 || slotItem.getId() == -1 || slotItem.getUniqueId() == -1){
                 slotIndex ++;
                 continue;
             }
             Clothes clothes = clothesRepository.findById(slotItem.getUniqueId());
+            if (clothes == null){
+                slotIndex ++;
+                continue;
+            }
             AvatarClothes avatarClothes = new AvatarClothes(0, avatar, clothes, slotIndex);
             avatarClothesRepository.save(avatarClothes);
             slotIndex ++;
