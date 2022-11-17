@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface AvatarEquipmentRepository extends JpaRepository<AvatarEquipment, Integer> {
     List<AvatarEquipment> findByAvatarAvatarName(String avatarName);
     int deleteByAvatarAvatarName(String avatarName);
+    int countByClothesId(int uniqueId);
 }
