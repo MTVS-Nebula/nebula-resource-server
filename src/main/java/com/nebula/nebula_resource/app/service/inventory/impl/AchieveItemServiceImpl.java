@@ -49,20 +49,19 @@ public class AchieveItemServiceImpl implements AchieveItemService {
         avatarClothesRepository.save(avatarClothes);
     }
     private int getEmptyClothesSlotNumber(Avatar avatar){
-        List<AvatarEquipment> avatarEquipmentList = avatar.getAvatarEquipmentList();
+        List<AvatarClothes> avatarClothesList = avatarClothesRepository.findByAvatar(avatar);
         Set<Integer> usingSlotNumbers = new HashSet<>();
-        for (AvatarEquipment avatarEquipment : avatarEquipmentList){
-            usingSlotNumbers.add(avatarEquipment.getSlotNumber());
+        for (AvatarClothes avatarClothes : avatarClothesList){
+            usingSlotNumbers.add(avatarClothes.getSlotNumber());
         }
         if (usingSlotNumbers.size() == 24){
             throw new RuntimeException("아이템 창이 가득 찼습니다");
         }
-        int emptySlotNumber = -1;
         for (int index = 0; index < 24; index ++){
             if (!usingSlotNumbers.contains(index)){
-                emptySlotNumber = index;
+                return index;
             }
         }
-        return emptySlotNumber;
+        throw new RuntimeException("빈 슬롯을 찾지 못했습니다");
     }
 }
