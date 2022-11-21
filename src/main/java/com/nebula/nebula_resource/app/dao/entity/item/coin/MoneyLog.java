@@ -1,7 +1,7 @@
 package com.nebula.nebula_resource.app.dao.entity.item.coin;
 
 import com.nebula.nebula_resource.app.dao.entity.avatar.Avatar;
-import java.sql.Date;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,10 +13,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TBL_COIN_LOG")
+@Table(name = "TBL_MONEY_LOG", schema = "item")
 @SequenceGenerator(
-        name = "SEQ_COIN_LOG_ID_GENERATOR",
-        sequenceName = "SEQ_COIN_LOG_ID",
+        name = "SEQ_MONEY_LOG_ID_GENERATOR",
+        sequenceName = "SEQ_MONEY_LOG_ID",
         initialValue = 1,
         allocationSize = 1
 )
@@ -24,7 +24,7 @@ public class MoneyLog {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "SEQ_COIN_LOG_ID_GENERATOR"
+            generator = "SEQ_MONEY_LOG_ID_GENERATOR"
     )
     private int id;
     @Column(name = "LAST_MINING_TIME")
@@ -68,7 +68,7 @@ public class MoneyLog {
 
     @Override
     public String toString() {
-        return "CoinLog{" +
+        return "MoneyLog{" +
                 "id=" + id +
                 ", lastMiningTime=" + lastMiningTime +
                 ", avatar=" + avatar +
