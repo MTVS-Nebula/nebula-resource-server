@@ -6,6 +6,7 @@ import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarEquipment;
 import com.nebula.nebula_resource.app.dao.entity.item.clothes.Clothes;
 import com.nebula.nebula_resource.app.dao.repository.avatar.AvatarRepository;
 import com.nebula.nebula_resource.app.dao.repository.inventory.AvatarClothesRepository;
+import com.nebula.nebula_resource.app.dao.repository.inventory.AvatarEquipmentRepository;
 import com.nebula.nebula_resource.app.dao.repository.item.ClothesRepository;
 import com.nebula.nebula_resource.app.service.inventory.AchieveItemService;
 import com.nebula.nebula_resource.helper.permission.PermissionChecker;
@@ -21,13 +22,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class AchieveItemServiceImpl implements AchieveItemService {
     private final AvatarRepository avatarRepository;
     private final AvatarClothesRepository avatarClothesRepository;
+    private final AvatarEquipmentRepository avatarEquipmentRepository;
     private final ClothesRepository clothesRepository;
     @Autowired
     public AchieveItemServiceImpl(AvatarRepository avatarRepository,
                                   AvatarClothesRepository avatarClothesRepository,
+                                  AvatarEquipmentRepository avatarEquipmentRepository,
                                   ClothesRepository clothesRepository) {
         this.avatarRepository = avatarRepository;
         this.avatarClothesRepository = avatarClothesRepository;
+        this.avatarEquipmentRepository = avatarEquipmentRepository;
         this.clothesRepository = clothesRepository;
     }
 
@@ -43,6 +47,25 @@ public class AchieveItemServiceImpl implements AchieveItemService {
         }
         addClothesToInventory(avatar,clothes);
     }
+
+    @Override
+    @Transactional
+    public void dropClothes(String avatarName, int clothesUniqueId){
+        Avatar avatar = avatarRepository.findByAvatarName(avatarName);
+        PermissionChecker.checkAvatarPermission(avatar);
+        AvatarClothes avatarClothes = avatarClothesRepository.findByAvatarAndClothesId(avatar,clothesUniqueId);
+        AvatarEquipment avatarEquipment = avatarEquipmentRepository.findByAvatarAndClothesId(avatar,clothesUniqueId);
+        if (avatarClothes != null){
+            avatarClothesRepository.delete(avatarClothes);
+        }
+        if (avatarEquipment != null){
+            avatarEquipmentRepository.delete(avatarEquipment);
+        }
+        if (avatarClothes == null && avatarEquipment == null){
+            throw new RuntimeException("옷에 대한 소유권이 없습니다.");
+        }
+    }
+
     private void addClothesToInventory(Avatar avatar, Clothes clothes){
         int emptySlotNumber = getEmptyClothesSlotNumber(avatar);
         AvatarClothes avatarClothes = new AvatarClothes(0,avatar,clothes,emptySlotNumber);
