@@ -4,13 +4,18 @@ import com.nebula.nebula_resource.app.dao.entity.avatar.Avatar;
 import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarClothes;
 import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarEquipment;
 import com.nebula.nebula_resource.app.dao.entity.item.clothes.Clothes;
+import com.nebula.nebula_resource.app.dao.entity.item.clothes.ClothesBuff;
 import com.nebula.nebula_resource.app.dao.repository.avatar.AvatarRepository;
 import com.nebula.nebula_resource.app.dao.repository.inventory.AvatarClothesRepository;
 import com.nebula.nebula_resource.app.dao.repository.inventory.AvatarEquipmentRepository;
 import com.nebula.nebula_resource.app.dao.repository.item.ClothesRepository;
+import com.nebula.nebula_resource.app.dto.inventory.BuffDTO;
+import com.nebula.nebula_resource.app.dto.inventory.SlotItemDTO;
 import com.nebula.nebula_resource.app.service.inventory.AchieveItemService;
+import com.nebula.nebula_resource.helper.generator.RandomClothesGenerator;
 import com.nebula.nebula_resource.helper.permission.PermissionChecker;
 import com.nebula.nebula_resource.helper.validation.ValidationChecker;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -87,4 +92,53 @@ public class AchieveItemServiceImpl implements AchieveItemService {
         }
         throw new RuntimeException("빈 슬롯을 찾지 못했습니다");
     }
+
+    @Override
+    @Transactional
+    public SlotItemDTO generateNewClothes(String avatarName){
+        Avatar avatar = avatarRepository.findByAvatarName(avatarName);
+        PermissionChecker.checkAvatarPermission(avatar);
+        Clothes clothes = RandomClothesGenerator.generateClothes(avatar);
+        int slotNumber = getEmptyClothesSlotNumber(avatar);
+        if (clothes != null){
+            AvatarClothes avatarClothes = new AvatarClothes(0,avatar,clothes,slotNumber);
+            avatarClothesRepository.save(avatarClothes);
+        }
+        return convertClothesToDTO(clothes);
+    }
+
+    private SlotItemDTO convertClothesToDTO(Clothes clothes){
+        SlotItemDTO slotItemDTO = null;
+        if (clothes == null){
+            slotItemDTO = new SlotItemDTO("꽝", -1, -1, null);
+            return slotItemDTO;
+        }
+        slotItemDTO = new SlotItemDTO(clothes.getBaseClothes().getName(),
+                clothes.getBaseClothes().getElementId(), clothes.getId(),
+                convertClothesBuffListToDTO(clothes.getBuffs()));
+        return slotItemDTO;
+    }
+
+    private List<BuffDTO> convertClothesBuffListToDTO(List<ClothesBuff> clothesBuffs){
+        List<BuffDTO> result = new ArrayList<>();
+        if (clothesBuffs == null){
+            return result;
+        }
+        for(ClothesBuff clothesBuff : clothesBuffs){
+            result.add(convertClothesBuffToDTO(clothesBuff));
+        }
+        return result;
+    }
+
+    private BuffDTO convertClothesBuffToDTO(ClothesBuff clothesBuff){
+        BuffDTO result = new BuffDTO();
+
+        result.setStat(clothesBuff.getBuffStat());
+        result.setValue(clothesBuff.getBuffValue());
+        result.setMax(clothesBuff.getBuffMax());
+        result.setMin(clothesBuff.getBuffMin());
+
+        return result;
+    }
+
 }
