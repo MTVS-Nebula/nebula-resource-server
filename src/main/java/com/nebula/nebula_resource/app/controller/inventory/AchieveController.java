@@ -38,4 +38,19 @@ public class AchieveController {
                     .body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
+
+    @PostMapping("drop/{avatarName}")
+    public ResponseEntity<?> dropClothes(@PathVariable String avatarName,
+                                         @RequestBody ClothesUniqueIdDTO clothesUniqueIdDTO){
+        try {
+            achieveItemService.dropClothes(avatarName, clothesUniqueIdDTO.getUniqueId());
+            return ResponseEntity
+                    .ok()
+                    .body(new ResponseMessage(HttpStatus.CREATED.value(), "success"));
+        } catch (RuntimeException e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        }
+    }
 }
