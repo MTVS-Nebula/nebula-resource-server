@@ -9,4 +9,5 @@ import java.util.List;
 public interface FollowRepository extends JpaRepository<Follow, FollowId> {
     int countByIdFollowingId(int followingId);
     List<Follow> findByIdFollowerId(int followerId);
+    int deleteByIdFollowerIdAndIdFollowingId(int followerId, int followingId);
 }
