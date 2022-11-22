@@ -46,8 +46,16 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
+    @Transactional
     public void unfollowAvatar(String followerName, String followingName) {
+        Avatar follower = findAvatarByAvatarName(followerName);
+        PermissionChecker.checkAvatarPermission(follower);
+        Avatar following = findAvatarByAvatarName(followingName);
+        deleteFollow(following, follower);
+    }
 
+    private void deleteFollow(Avatar following, Avatar follower){
+        followRepository.deleteByIdFollowerIdAndIdFollowingId(follower.getId(), following.getId());
     }
 
     @Override
