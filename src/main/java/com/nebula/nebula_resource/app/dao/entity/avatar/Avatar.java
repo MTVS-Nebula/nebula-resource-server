@@ -42,6 +42,8 @@ public class Avatar {
     private String isDeleted;
     @Column(name = "DELETED_DATE")
     private Date deletedDate;
+    @Column(name = "FW_COUNT")
+    private int followerCount;
     @OneToOne
     private Attachment image;
     @OneToOne(mappedBy = "avatar")
@@ -67,6 +69,7 @@ public class Avatar {
         this.money = 0;
         this.createdDate = createdDate;
         this.isDeleted = isDeleted;
+        this.followerCount = 0;
         this.deletedDate = deletedDate;
         this.image = image;
         this.avatarBuildingBundleList = avatarBuildingBundleList;
@@ -112,6 +115,14 @@ public class Avatar {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    public int getFollowerCount() {
+        return followerCount;
+    }
+
+    public void setFollowerCount(int followerCount) {
+        this.followerCount = followerCount;
     }
 
     public Date getCreatedDate() {
