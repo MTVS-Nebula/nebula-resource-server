@@ -33,4 +33,19 @@ public class FollowController {
                     .body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
+
+    @DeleteMapping("{avatarName}")
+    public ResponseEntity<?> unfollow(@PathVariable String avatarName,
+                                      @RequestBody FollowRequestDTO followRequestDTO){
+        try {
+            followService.unfollowAvatar(avatarName, followRequestDTO.getFollowingName());
+            return ResponseEntity
+                    .ok()
+                    .body(new ResponseMessage(HttpStatus.OK.value(), "success"));
+        } catch (RuntimeException e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        }
+    }
 }
