@@ -39,6 +39,7 @@ public class FollowServiceImpl implements FollowService {
         Avatar following = findAvatarByAvatarName(followingName);
 
         generateFollow(following, follower);
+        refreshFollowerCount(following);
     }
 
     private void generateFollow(Avatar following, Avatar follower){
@@ -54,6 +55,8 @@ public class FollowServiceImpl implements FollowService {
         PermissionChecker.checkAvatarPermission(follower);
         Avatar following = findAvatarByAvatarName(followingName);
         deleteFollow(following, follower);
+
+        refreshFollowerCount(following);
     }
 
     private void deleteFollow(Avatar following, Avatar follower){
@@ -61,6 +64,7 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<FollowResponseVO> getAvatarFollowingList(String followerName) {
         Avatar follower = findAvatarByAvatarName(followerName);
         return getFollowResponseList(follower);
@@ -84,5 +88,11 @@ public class FollowServiceImpl implements FollowService {
             throw new RuntimeException("해당 이름의 아바타가 존재하지 않습니다.");
         }
         return avatar;
+    }
+
+    private void refreshFollowerCount(Avatar following){
+        int followerCount = followRepository.countByIdFollowingId(following.getId());
+        following.setFollowerCount(followerCount);
+        avatarRepository.save(following);
     }
 }
