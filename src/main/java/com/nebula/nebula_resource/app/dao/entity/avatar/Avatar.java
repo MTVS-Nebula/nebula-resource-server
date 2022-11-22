@@ -4,6 +4,7 @@ package com.nebula.nebula_resource.app.dao.entity.avatar;
 import com.nebula.nebula_resource.app.dao.entity.file.Attachment;
 import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarBuildingBundle;
 import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarEquipment;
+import com.nebula.nebula_resource.app.dao.entity.skyisland.SkyIsland;
 import com.nebula.nebula_resource.app.dao.entity.user.User;
 
 import java.util.List;
@@ -43,6 +44,8 @@ public class Avatar {
     private Date deletedDate;
     @OneToOne
     private Attachment image;
+    @OneToOne(mappedBy = "avatar")
+    private SkyIsland skyIsland;
     @OneToMany(mappedBy = "avatar")
     private List<AvatarBuildingBundle>  avatarBuildingBundleList;
     @OneToOne(mappedBy = "avatar")
@@ -141,6 +144,14 @@ public class Avatar {
 
     public void setImage(Attachment image) {
         this.image = image;
+    }
+
+    public SkyIsland getSkyIsland() {
+        return skyIsland;
+    }
+
+    public void setSkyIsland(SkyIsland skyIsland) {
+        this.skyIsland = skyIsland;
     }
 
     public List<AvatarBuildingBundle> getAvatarBuildingBundleList() {
