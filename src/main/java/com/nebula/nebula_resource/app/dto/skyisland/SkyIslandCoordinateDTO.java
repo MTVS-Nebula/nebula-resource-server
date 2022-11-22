@@ -8,11 +8,12 @@ public class SkyIslandCoordinateDTO {
     private String keyword1;
     private String keyword2;
     private String image_url;
+    private int follower;
 
     public SkyIslandCoordinateDTO() {
     }
 
-    public SkyIslandCoordinateDTO(String avatarName, double pc1, double pc2, double pc3, String keyword1, String keyword2, String image_url) {
+    public SkyIslandCoordinateDTO(String avatarName, double pc1, double pc2, double pc3, String keyword1, String keyword2, String image_url, int follower) {
         this.avatarName = avatarName;
         this.pc1 = pc1;
         this.pc2 = pc2;
@@ -20,6 +21,7 @@ public class SkyIslandCoordinateDTO {
         this.keyword1 = keyword1;
         this.keyword2 = keyword2;
         this.image_url = image_url;
+        this.follower = follower;
     }
 
     public double getPc1() {
@@ -76,6 +78,14 @@ public class SkyIslandCoordinateDTO {
 
     public void setAvatarName(String avatarName) {
         this.avatarName = avatarName;
+    }
+
+    public int getFollower() {
+        return follower;
+    }
+
+    public void setFollower(int follower) {
+        this.follower = follower;
     }
 
     @Override
