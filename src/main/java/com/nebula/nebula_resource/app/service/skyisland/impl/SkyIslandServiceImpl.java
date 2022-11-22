@@ -8,6 +8,7 @@ import com.nebula.nebula_resource.app.dao.entity.skyisland.SkyIsland;
 import com.nebula.nebula_resource.app.dao.entity.skyisland.SkyIslandCoordinate;
 import com.nebula.nebula_resource.app.dao.entity.skyisland.SkyIslandPlaceObject;
 import com.nebula.nebula_resource.app.dao.repository.avatar.AvatarRepository;
+import com.nebula.nebula_resource.app.dao.repository.avatar.FollowRepository;
 import com.nebula.nebula_resource.app.dao.repository.item.PlaceObjectRepository;
 import com.nebula.nebula_resource.app.dao.repository.skyisland.SkyIslandCoordinateRepository;
 import com.nebula.nebula_resource.app.dao.repository.skyisland.SkyIslandPlaceObjectRepository;
@@ -34,17 +35,19 @@ public class SkyIslandServiceImpl implements SkyIslandService {
     private final SkyIslandPlaceObjectRepository skyIslandPlaceObjectRepository;
     private final PlaceObjectRepository placeObjectRepository;
     private final SkyIslandCoordinateRepository skyIslandCoordinateRepository;
+    private final FollowRepository followRepository;
 
     @Autowired
     public SkyIslandServiceImpl(SkyIslandRepository skyIslandRepository, AvatarRepository avatarRepository,
                                 SkyIslandPlaceObjectRepository skyIslandPlaceObjectRepository,
                                 PlaceObjectRepository placeObjectRepository,
-                                SkyIslandCoordinateRepository skyIslandCoordinateRepository) {
+                                SkyIslandCoordinateRepository skyIslandCoordinateRepository, FollowRepository followRepository) {
         this.skyIslandRepository = skyIslandRepository;
         this.avatarRepository = avatarRepository;
         this.skyIslandPlaceObjectRepository = skyIslandPlaceObjectRepository;
         this.placeObjectRepository = placeObjectRepository;
         this.skyIslandCoordinateRepository = skyIslandCoordinateRepository;
+        this.followRepository = followRepository;
     }
 
     @Override
@@ -147,6 +150,7 @@ public class SkyIslandServiceImpl implements SkyIslandService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Map<Integer, SkyIslandCoordinateDTO> getSkyIslandMap() {
         Map<Integer, SkyIslandCoordinateDTO> result = new HashMap<>();
         List<SkyIslandCoordinate> skyIslandCoordinateList = skyIslandCoordinateRepository.findAllBy();
@@ -161,7 +165,8 @@ public class SkyIslandServiceImpl implements SkyIslandService {
             String keyword2 = skyIslandCoordinate.getKeyword2();
             String avatarName = avatar.getAvatarName();
             String imageUrl = avatar.getImage().getSavedPath();
-            SkyIslandCoordinateDTO dto = new SkyIslandCoordinateDTO(avatarName,pc1,pc2,pc3,keyword1,keyword2,imageUrl);
+            int follower = avatar.getFollowerCount();
+            SkyIslandCoordinateDTO dto = new SkyIslandCoordinateDTO(avatarName,pc1,pc2,pc3,keyword1,keyword2,imageUrl, follower);
 
             result.put(id,dto);
         }

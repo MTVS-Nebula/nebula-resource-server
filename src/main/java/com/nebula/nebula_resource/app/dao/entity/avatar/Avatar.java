@@ -4,6 +4,7 @@ package com.nebula.nebula_resource.app.dao.entity.avatar;
 import com.nebula.nebula_resource.app.dao.entity.file.Attachment;
 import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarBuildingBundle;
 import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarEquipment;
+import com.nebula.nebula_resource.app.dao.entity.skyisland.SkyIsland;
 import com.nebula.nebula_resource.app.dao.entity.user.User;
 
 import java.util.List;
@@ -41,8 +42,12 @@ public class Avatar {
     private String isDeleted;
     @Column(name = "DELETED_DATE")
     private Date deletedDate;
+    @Column(name = "FW_COUNT")
+    private int followerCount;
     @OneToOne
     private Attachment image;
+    @OneToOne(mappedBy = "avatar")
+    private SkyIsland skyIsland;
     @OneToMany(mappedBy = "avatar")
     private List<AvatarBuildingBundle>  avatarBuildingBundleList;
     @OneToOne(mappedBy = "avatar")
@@ -64,6 +69,7 @@ public class Avatar {
         this.money = 0;
         this.createdDate = createdDate;
         this.isDeleted = isDeleted;
+        this.followerCount = 0;
         this.deletedDate = deletedDate;
         this.image = image;
         this.avatarBuildingBundleList = avatarBuildingBundleList;
@@ -111,6 +117,14 @@ public class Avatar {
         this.money = money;
     }
 
+    public int getFollowerCount() {
+        return followerCount;
+    }
+
+    public void setFollowerCount(int followerCount) {
+        this.followerCount = followerCount;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -141,6 +155,14 @@ public class Avatar {
 
     public void setImage(Attachment image) {
         this.image = image;
+    }
+
+    public SkyIsland getSkyIsland() {
+        return skyIsland;
+    }
+
+    public void setSkyIsland(SkyIsland skyIsland) {
+        this.skyIsland = skyIsland;
     }
 
     public List<AvatarBuildingBundle> getAvatarBuildingBundleList() {
