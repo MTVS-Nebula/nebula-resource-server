@@ -20,8 +20,8 @@ public class FollowController {
     }
 
     @PostMapping("{avatarName}")
-    public ResponseEntity<?> createAvatar(@PathVariable String avatarName,
-                                          @RequestBody FollowRequestDTO followRequestDTO){
+    public ResponseEntity<?> follow(@PathVariable String avatarName,
+                                    @RequestBody FollowRequestDTO followRequestDTO){
         try {
             followService.followAvatar(avatarName, followRequestDTO.getFollowingName());
             return ResponseEntity
