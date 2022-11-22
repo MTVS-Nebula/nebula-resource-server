@@ -5,6 +5,7 @@ import com.nebula.nebula_resource.app.dao.entity.avatar.Follow;
 import com.nebula.nebula_resource.app.dao.entity.avatar.embeddable.FollowId;
 import com.nebula.nebula_resource.app.dao.repository.avatar.AvatarRepository;
 import com.nebula.nebula_resource.app.dao.repository.avatar.FollowRepository;
+import com.nebula.nebula_resource.app.dto.avatar.FollowResponseVO;
 import com.nebula.nebula_resource.app.service.avatar.FollowService;
 import com.nebula.nebula_resource.helper.permission.PermissionChecker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -59,8 +61,21 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public List<Follow> getMyFollowingList(String follower) {
-        return null;
+    public List<FollowResponseVO> getAvatarFollowingList(String followerName) {
+        Avatar follower = findAvatarByAvatarName(followerName);
+        return getFollowResponseList(follower);
+    }
+
+    private List<FollowResponseVO> getFollowResponseList(Avatar follower){
+        List<FollowResponseVO> result = new ArrayList<>();
+        List<Follow> followList = followRepository.findByIdFollowerId(follower.getId());
+        if (followList == null){
+            return result;
+        }
+        for (Follow follow : followList){
+            result.add(new FollowResponseVO(follow));
+        }
+        return result;
     }
 
     private Avatar findAvatarByAvatarName(String avatarName){
