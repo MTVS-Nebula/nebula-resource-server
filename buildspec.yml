@@ -19,7 +19,7 @@ artifacts:
   files:
     - target/nebula_resource-0.0.1-SNAPSHOT.jar  # 업로드 할 파일들
     - appspec.yml #CodeDeploy 추가
-    - scripts/** #CodeDeploy 추가
+    - script/** #CodeDeploy 추가
   discard-paths: yes # 파일명 기준으로만 업로드
 cache:
   paths:
