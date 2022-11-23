@@ -5,7 +5,7 @@ echo "## build 파일명: $JAR_NAME"
 
 echo "## build 파일 복사"
 DEPLOY_PATH=/home/ec2-user/
-cp $BUILD_WAR $DEPLOY_PATH
+cp $BUILD_JAR $DEPLOY_PATH
 
 CURRENT_PID=$(pgrep -f $JAR_NAME)
 echo "## 현재 실행중인 애플리케이션 pid: $CURRENT_PID"
