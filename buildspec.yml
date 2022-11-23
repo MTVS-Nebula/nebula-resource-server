@@ -1,0 +1,26 @@
+version: 0.2  # 0.2 권장
+
+phases:   # 빌드 단계
+  install:
+    runtime-versions:
+      java: corretto11
+  pre_build:
+    commands:
+      - echo Pre-Build completed on `date`
+  build:
+    commands:
+      - echo Build started on `date`
+      - mvn test
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - mvn package
+artifacts:
+  files:
+    - target/nebula_resource-0.0.1-SNAPSHOT.jar  # 업로드 할 파일들
+    - appspec.yml #CodeDeploy 추가
+    - scripts/** #CodeDeploy 추가
+  discard-paths: yes # 파일명 기준으로만 업로드
+cache:
+  paths:
+    - '/root/.m2/**/*'   # S3 cache에 등록할 파일들
