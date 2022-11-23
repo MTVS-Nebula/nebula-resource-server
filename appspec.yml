@@ -1,4 +1,4 @@
-version: 0.2  # CodeDeploy 버전
+version: 0.0  # CodeDeploy 버전
 os: linux
 files:
   - source: /    # CodeDeploy에서 전달해 준 파일 중 destination으로 이동시킬 대상을 루트로 지정(전체파일)
