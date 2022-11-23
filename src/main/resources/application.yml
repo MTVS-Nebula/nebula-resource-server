@@ -31,4 +31,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh
+        include: refresh, health, info
