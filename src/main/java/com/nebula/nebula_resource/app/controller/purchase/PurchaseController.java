@@ -29,8 +29,8 @@ public class PurchaseController {
         try {
             PurchaseListDTO result = purchaseService.getPurchaseList(avatarName);
             return ResponseEntity
-                    .created(URI.create("/inventory/building-bundle"))
-                    .body(new ResultResponseMessage(HttpStatus.CREATED.value(), "success", result));
+                    .ok()
+                    .body(new ResultResponseMessage(HttpStatus.OK.value(), "success", result));
         } catch (PermissionException e) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
