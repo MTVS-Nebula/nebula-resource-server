@@ -7,4 +7,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface PurchaseService {
     PurchaseListDTO getPurchaseList(String avatarName);
     PurchaseBuildingBundleDTO purchaseBundle(String avatarName, String bundleName);
+    void purchaseClothes(String avatarName, String clothesName);
 }

@@ -2,11 +2,17 @@ package com.nebula.nebula_resource.app.service.purchase.impl;
 
 import com.nebula.nebula_resource.app.dao.entity.avatar.Avatar;
 import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarBuildingBundle;
+import com.nebula.nebula_resource.app.dao.entity.inventory.AvatarClothes;
 import com.nebula.nebula_resource.app.dao.entity.item.buildingbundle.BuildingBundle;
+import com.nebula.nebula_resource.app.dao.entity.item.clothes.BaseClothes;
+import com.nebula.nebula_resource.app.dao.entity.item.clothes.Clothes;
 import com.nebula.nebula_resource.app.dao.entity.item.rotation.ClothesRotation;
 import com.nebula.nebula_resource.app.dao.repository.avatar.AvatarRepository;
 import com.nebula.nebula_resource.app.dao.repository.inventory.AvatarBuildingBundleRepository;
+import com.nebula.nebula_resource.app.dao.repository.inventory.AvatarClothesRepository;
+import com.nebula.nebula_resource.app.dao.repository.item.BaseClothesRepository;
 import com.nebula.nebula_resource.app.dao.repository.item.BuildingBundleRepository;
+import com.nebula.nebula_resource.app.dao.repository.item.ClothesRepository;
 import com.nebula.nebula_resource.app.dao.repository.item.rotation.ClothesRotationRepository;
 import com.nebula.nebula_resource.app.dto.inventory.SlotItemDTO;
 import com.nebula.nebula_resource.app.dto.purchase.PurchaseBuildingBundleDTO;
@@ -33,14 +39,20 @@ public class PurchaseServiceImpl implements PurchaseService {
     private final BuildingBundleRepository buildingBundleRepository;
     private final AvatarBuildingBundleRepository avatarBuildingBundleRepository;
     private final ClothesRotationRepository clothesRotationRepository;
+    private final BaseClothesRepository baseClothesRepository;
+    private final ClothesRepository clothesRepository;
+    private final AvatarClothesRepository avatarClothesRepository;
 
     @Autowired
     public PurchaseServiceImpl(AvatarRepository avatarRepository, BuildingBundleRepository buildingBundleRepository,
-                               AvatarBuildingBundleRepository avatarBuildingBundleRepository, ClothesRotationRepository clothesRotationRepository) {
+                               AvatarBuildingBundleRepository avatarBuildingBundleRepository, ClothesRotationRepository clothesRotationRepository, BaseClothesRepository baseClothesRepository, ClothesRepository clothesRepository, AvatarClothesRepository avatarClothesRepository) {
         this.avatarRepository = avatarRepository;
         this.buildingBundleRepository = buildingBundleRepository;
         this.avatarBuildingBundleRepository = avatarBuildingBundleRepository;
         this.clothesRotationRepository = clothesRotationRepository;
+        this.baseClothesRepository = baseClothesRepository;
+        this.clothesRepository = clothesRepository;
+        this.avatarClothesRepository = avatarClothesRepository;
     }
 
     @Override
@@ -152,5 +164,59 @@ public class PurchaseServiceImpl implements PurchaseService {
         PurchaseBuildingBundleDTO purchaseBuildingBundleDTO
                 = new PurchaseBuildingBundleDTO(buildingBundle.getFixSlotNumber(), remainMoney, slotItemDTO);
         return purchaseBuildingBundleDTO;
+    }
+
+    @Override
+    @Transactional
+    public void purchaseClothes(String avatarName, String clothesName) {
+        Avatar avatar = avatarRepository.findByAvatarName(avatarName);
+        PermissionChecker.checkAvatarPermission(avatar);
+        BaseClothes baseClothes = findBaseClothes(clothesName);
+        checkIsRotation(baseClothes);
+        purchase(avatar, baseClothes.getPurchaseAmount());
+        generateClothesToAvatar(baseClothes, avatar);
+    }
+
+    private BaseClothes findBaseClothes(String clothesName){
+        BaseClothes baseClothes = baseClothesRepository.findByName(clothesName);
+        if (baseClothes == null){
+            throw new ItemExistException("해당 이름의 옷이 존재하지 않습니다.");
+        }
+        return baseClothes;
+    }
+
+    private void checkIsRotation(BaseClothes baseClothes){
+        List<ClothesRotation> clothesRotationList = clothesRotationRepository.findBy();
+        for (ClothesRotation clothesRotation : clothesRotationList){
+            if (clothesRotation.getClothes().getElementId() == baseClothes.getElementId()){
+                return;
+            }
+        }
+        throw new NotAvailableException("해당 옷은 로테이션에 포함되어있지 않습니다.");
+    }
+
+    private void generateClothesToAvatar(BaseClothes baseClothes, Avatar avatar){
+        Clothes clothes = new Clothes(0,baseClothes,null,avatar);
+        clothesRepository.save(clothes);
+        int emptySlotNumber = getEmptyClothesSlotNumber(avatar);
+        AvatarClothes avatarClothes = new AvatarClothes(0,avatar,clothes,emptySlotNumber);
+        avatarClothesRepository.save(avatarClothes);
+    }
+
+    private int getEmptyClothesSlotNumber(Avatar avatar){
+        List<AvatarClothes> avatarClothesList = avatarClothesRepository.findByAvatar(avatar);
+        Set<Integer> usingSlotNumbers = new HashSet<>();
+        for (AvatarClothes avatarClothes : avatarClothesList){
+            usingSlotNumbers.add(avatarClothes.getSlotNumber());
+        }
+        if (usingSlotNumbers.size() == 24){
+            throw new RuntimeException("아이템 창이 가득 찼습니다");
+        }
+        for (int index = 0; index < 24; index ++){
+            if (!usingSlotNumbers.contains(index)){
+                return index;
+            }
+        }
+        throw new RuntimeException("빈 슬롯을 찾지 못했습니다");
     }
 }
