@@ -52,7 +52,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         List<PurchaseInfoDTO> purchasableBBInfoList= convertBuildingBundleListToDTO(purchasableBBList);
         List<ClothesRotation> clothesRotationList = clothesRotationRepository.findBy();
         List<PurchaseInfoDTO> purchasableCLInfoList = convertClothesRotationToDTO(clothesRotationList);
-        PurchaseListDTO result = new PurchaseListDTO(purchasableBBInfoList, purchasableCLInfoList);
+        PurchaseListDTO result = new PurchaseListDTO(purchasableCLInfoList, purchasableBBInfoList);
         return result;
     }
 
