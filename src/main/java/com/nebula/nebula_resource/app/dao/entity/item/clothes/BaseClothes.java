@@ -1,12 +1,10 @@
 package com.nebula.nebula_resource.app.dao.entity.item.clothes;
 
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -30,14 +28,17 @@ public class BaseClothes {
     private String name;
     @Column(name = "ELEMENT_ID")
     private Integer elementId;
+    @Column(name = "PURCHASE_AMOUNT")
+    private Integer purchaseAmount;
 
     public BaseClothes() {
     }
 
-    public BaseClothes(int id, String name, Integer elementId) {
+    public BaseClothes(int id, String name, Integer elementId, Integer purchaseAmount) {
         this.id = id;
         this.name = name;
         this.elementId = elementId;
+        this.purchaseAmount = purchaseAmount;
     }
 
     public int getId() {
@@ -64,12 +65,21 @@ public class BaseClothes {
         this.elementId = elementId;
     }
 
+    public Integer getPurchaseAmount() {
+        return purchaseAmount;
+    }
+
+    public void setPurchaseAmount(Integer purchaseAmount) {
+        this.purchaseAmount = purchaseAmount;
+    }
+
     @Override
     public String toString() {
-        return "Clothes{" +
+        return "BaseClothes{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", elementId=" + elementId +
+                ", purchaseAmount=" + purchaseAmount +
                 '}';
     }
 }
