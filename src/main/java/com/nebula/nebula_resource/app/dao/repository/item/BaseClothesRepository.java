@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface BaseClothesRepository extends JpaRepository<BaseClothes, Integer> {
     int countBy();
     BaseClothes findById(int id);
+    BaseClothes findByName(String name);
 }

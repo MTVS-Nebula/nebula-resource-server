@@ -1,6 +1,7 @@
 package com.nebula.nebula_resource.app.controller.purchase;
 
 import com.nebula.nebula_resource.app.dto.purchase.BuildingBundleNameDTO;
+import com.nebula.nebula_resource.app.dto.purchase.ClothesNameDTO;
 import com.nebula.nebula_resource.app.dto.purchase.PurchaseBuildingBundleDTO;
 import com.nebula.nebula_resource.app.dto.purchase.PurchaseListDTO;
 import com.nebula.nebula_resource.app.service.purchase.PurchaseService;
@@ -29,8 +30,8 @@ public class PurchaseController {
         try {
             PurchaseListDTO result = purchaseService.getPurchaseList(avatarName);
             return ResponseEntity
-                    .created(URI.create("/inventory/building-bundle"))
-                    .body(new ResultResponseMessage(HttpStatus.CREATED.value(), "success", result));
+                    .ok()
+                    .body(new ResultResponseMessage(HttpStatus.OK.value(), "success", result));
         } catch (PermissionException e) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
@@ -52,6 +53,25 @@ public class PurchaseController {
             return ResponseEntity
                     .created(URI.create("/inventory/building-bundle"))
                     .body(new ResultResponseMessage(HttpStatus.CREATED.value(), "success", result));
+        } catch (PermissionException e) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(new ResponseMessage(HttpStatus.UNAUTHORIZED.value(), e.getMessage()));
+        } catch (RuntimeException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        }
+    }
+
+    @PostMapping("clothes/{avatarName}")
+    public ResponseEntity<?> purchaseBuildingBundle(@PathVariable String avatarName,
+                                                    @RequestBody ClothesNameDTO clothesNameDTO) {
+        try {
+            purchaseService.purchaseClothes(avatarName, clothesNameDTO.getClothesName());
+            return ResponseEntity
+                    .created(URI.create("/inventory/clothes"))
+                    .body(new ResponseMessage(HttpStatus.CREATED.value(), "success"));
         } catch (PermissionException e) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
