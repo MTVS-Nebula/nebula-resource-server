@@ -163,10 +163,12 @@ public class SkyIslandServiceImpl implements SkyIslandService {
             double pc3 = skyIslandCoordinate.getPc3();
             String keyword1 = skyIslandCoordinate.getKeyword1();
             String keyword2 = skyIslandCoordinate.getKeyword2();
+            String keyword3 = skyIslandCoordinate.getKeyword3();
+            String keyword4 = skyIslandCoordinate.getKeyword4();
             String avatarName = avatar.getAvatarName();
             String imageUrl = avatar.getImage().getSavedPath();
             int follower = avatar.getFollowerCount();
-            SkyIslandCoordinateDTO dto = new SkyIslandCoordinateDTO(avatarName,pc1,pc2,pc3,keyword1,keyword2,imageUrl, follower);
+            SkyIslandCoordinateDTO dto = new SkyIslandCoordinateDTO(avatarName,pc1,pc2,pc3,keyword1,keyword2, keyword3, keyword4, imageUrl, follower);
 
             result.put(id,dto);
         }

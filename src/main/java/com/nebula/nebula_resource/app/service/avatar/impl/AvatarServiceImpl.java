@@ -99,7 +99,7 @@ public class AvatarServiceImpl implements AvatarService {
         generateBasicBundleList(avatar);
         SkyIsland skyIsland = new SkyIsland(0, avatar, null);
         skyIslandRepository.save(skyIsland);
-        SkyIslandCoordinate skyIslandCoordinate = new SkyIslandCoordinate(skyIsland,0,0,0,"default","default");
+        SkyIslandCoordinate skyIslandCoordinate = new SkyIslandCoordinate(skyIsland,0,0,0,"default","default", "default", "default");
         skyIslandCoordinateRepository.save(skyIslandCoordinate);
 
         sendRefreshRequest();

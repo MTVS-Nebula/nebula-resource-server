@@ -7,19 +7,23 @@ public class SkyIslandCoordinateDTO {
     private double pc3;
     private String keyword1;
     private String keyword2;
+    private String keyword3;
+    private String keyword4;
     private String image_url;
     private int follower;
 
     public SkyIslandCoordinateDTO() {
     }
 
-    public SkyIslandCoordinateDTO(String avatarName, double pc1, double pc2, double pc3, String keyword1, String keyword2, String image_url, int follower) {
+    public SkyIslandCoordinateDTO(String avatarName, double pc1, double pc2, double pc3, String keyword1, String keyword2, String keyword3, String keyword4, String image_url, int follower) {
         this.avatarName = avatarName;
         this.pc1 = pc1;
         this.pc2 = pc2;
         this.pc3 = pc3;
         this.keyword1 = keyword1;
         this.keyword2 = keyword2;
+        this.keyword3 = keyword3;
+        this.keyword4 = keyword4;
         this.image_url = image_url;
         this.follower = follower;
     }
@@ -64,6 +68,22 @@ public class SkyIslandCoordinateDTO {
         this.keyword2 = keyword2;
     }
 
+    public String getKeyword3() {
+        return keyword3;
+    }
+
+    public void setKeyword3(String keyword3) {
+        this.keyword3 = keyword3;
+    }
+
+    public String getKeyword4() {
+        return keyword4;
+    }
+
+    public void setKeyword4(String keyword4) {
+        this.keyword4 = keyword4;
+    }
+
     public String getImage_url() {
         return image_url;
     }
@@ -97,7 +117,10 @@ public class SkyIslandCoordinateDTO {
                 ", pc3=" + pc3 +
                 ", keyword1='" + keyword1 + '\'' +
                 ", keyword2='" + keyword2 + '\'' +
+                ", keyword3='" + keyword3 + '\'' +
+                ", keyword4='" + keyword4 + '\'' +
                 ", image_url='" + image_url + '\'' +
+                ", follower=" + follower +
                 '}';
     }
 }
