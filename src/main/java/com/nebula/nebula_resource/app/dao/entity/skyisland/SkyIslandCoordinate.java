@@ -30,18 +30,24 @@ public class SkyIslandCoordinate {
     private String keyword1;
     @Column(name = "KEYWORD2", nullable = false)
     private String keyword2;
+    @Column(name = "KEYWORD3", nullable = false)
+    private String keyword3;
+    @Column(name = "KEYWORD4", nullable = false)
+    private String keyword4;
 
     public SkyIslandCoordinate() {
     }
 
     public SkyIslandCoordinate(SkyIsland skyIsland, double pc1, double pc2, double pc3, String keword1,
-                               String keyword2) {
+                               String keyword2, String keyword3, String keyword4) {
         this.skyIsland = skyIsland;
         this.pc1 = pc1;
         this.pc2 = pc2;
         this.pc3 = pc3;
         this.keyword1 = keword1;
         this.keyword2 = keyword2;
+        this.keyword3 = keyword3;
+        this.keyword4 = keyword4;
     }
 
     public int getId() {
@@ -100,6 +106,22 @@ public class SkyIslandCoordinate {
         this.keyword2 = keyword2;
     }
 
+    public String getKeyword3() {
+        return keyword3;
+    }
+
+    public void setKeyword3(String keyword3) {
+        this.keyword3 = keyword3;
+    }
+
+    public String getKeyword4() {
+        return keyword4;
+    }
+
+    public void setKeyword4(String keyword4) {
+        this.keyword4 = keyword4;
+    }
+
     @Override
     public String toString() {
         return "SkyIslandCoordinate{" +
@@ -108,8 +130,10 @@ public class SkyIslandCoordinate {
                 ", pc1=" + pc1 +
                 ", pc2=" + pc2 +
                 ", pc3=" + pc3 +
-                ", keword1='" + keyword1 + '\'' +
+                ", keyword1='" + keyword1 + '\'' +
                 ", keyword2='" + keyword2 + '\'' +
+                ", keyword3='" + keyword3 + '\'' +
+                ", keyword4='" + keyword4 + '\'' +
                 '}';
     }
 }
