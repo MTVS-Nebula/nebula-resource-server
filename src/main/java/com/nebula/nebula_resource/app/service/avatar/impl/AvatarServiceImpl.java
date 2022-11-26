@@ -117,6 +117,9 @@ public class AvatarServiceImpl implements AvatarService {
         // 아바타 소유 권한 확인
         checkAvatarAuthentication(avatar);
 
+        // 이미 텍스처가 존재한다면 삭제
+        avatarTexturePlaneRepository.deleteByAvatarId(avatar.getId());
+
         //텍스처 파싱
         JSONObject jsonObject = new JSONObject(textureMap);
         String planeTexture = jsonObject.toString();
