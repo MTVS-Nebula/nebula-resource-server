@@ -14,4 +14,5 @@ public interface AvatarService {
     void saveTexture(String avatarName, Map<String , Object> textureMap);
     AvatarAppearanceVO getAvatarAppearance(String avatarName);
     void deleteAvatar(String avatarName);
+    Map<String, Object> getDefaultTexture(String gender);
 }

@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -136,6 +138,7 @@ public class AvatarServiceImpl implements AvatarService {
         return result;
     }
 
+    @Override
     @Transactional
     public void deleteAvatar(String avatarName){
         Avatar avatar = avatarRepository.findByAvatarName(avatarName);
@@ -144,6 +147,28 @@ public class AvatarServiceImpl implements AvatarService {
         }
         checkAvatarAuthentication(avatar);
         avatarRepository.delete(avatar);
+    }
+
+    @Override
+    public Map<String, Object> getDefaultTexture(String gender) {
+        int genderCode = 1;
+        if ("female".equals(gender)){
+            genderCode = 2;
+        }
+        AvatarTexturePlane avatarTexturePlane = avatarTexturePlaneRepository.findById(genderCode);
+        Map<String, Object> result = parseTexturePlane(avatarTexturePlane);
+        return result;
+    }
+
+    private Map<String, Object> parseTexturePlane(AvatarTexturePlane avatarTexturePlane) {
+        Map<String, Object> result = null;
+        try {
+            JSONParser jsonParser = new JSONParser();
+            result = (Map<String, Object>) jsonParser.parse(avatarTexturePlane.getTexturePlane());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 
     private void sendRefreshRequest(){
