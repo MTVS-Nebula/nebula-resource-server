@@ -114,4 +114,18 @@ public class AvatarController {
                     .body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
+
+    @GetMapping("texture/{gender}")
+    public ResponseEntity<?> getDefaultTexture(@PathVariable String gender){
+        try {
+            Map<String, Object> result = avatarService.getDefaultTexture(gender);
+            return ResponseEntity
+                    .ok()
+                    .body(new ResultResponseMessage(HttpStatus.OK.value(), "success", result));
+        } catch (RuntimeException e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        }
+    }
 }
