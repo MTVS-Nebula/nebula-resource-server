@@ -186,12 +186,9 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     private void generateBasicBundleList(Avatar avatar){
-        BuildingBundle bbStandard = buildingBundleRepository.findById(0);
-        BuildingBundle bbSystem = buildingBundleRepository.findById(1);
-        AvatarBuildingBundle abStandard = new AvatarBuildingBundle(0, avatar, bbStandard,0);
-        AvatarBuildingBundle abSystem = new AvatarBuildingBundle(0, avatar, bbSystem,1);
-        avatarBuildingBundleRepository.save(abStandard);
-        avatarBuildingBundleRepository.save(abSystem);
+        BuildingBundle bbWestern = buildingBundleRepository.findById(5);
+        AvatarBuildingBundle abWestern = new AvatarBuildingBundle(0, avatar, bbWestern,0);
+        avatarBuildingBundleRepository.save(abWestern);
     }
 
     private void generateTagList(AvatarCreateDTO avatarCreateDTO, Avatar avatar){
