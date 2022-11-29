@@ -36,12 +36,12 @@ public class ClothesBuff {
     private int buffMax;
     @ManyToOne
     @JoinColumn(name = "CLOTHES_ID")
-    private BaseClothes clothes;
+    private Clothes clothes;
 
     public ClothesBuff() {
     }
 
-    public ClothesBuff(int id, int buffStat, int buffValue, int buffMin, int buffMax, BaseClothes clothes) {
+    public ClothesBuff(int id, int buffStat, int buffValue, int buffMin, int buffMax, Clothes clothes) {
         this.id = id;
         this.buffStat = buffStat;
         this.buffValue = buffValue;
@@ -90,11 +90,11 @@ public class ClothesBuff {
         this.buffMax = buffMax;
     }
 
-    public BaseClothes getClothes() {
+    public Clothes getClothes() {
         return clothes;
     }
 
-    public void setClothes(BaseClothes clothes) {
+    public void setClothes(Clothes clothes) {
         this.clothes = clothes;
     }
 
