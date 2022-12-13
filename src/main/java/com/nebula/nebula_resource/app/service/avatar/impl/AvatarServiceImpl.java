@@ -26,6 +26,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.nebula.nebula_resource.helper.callapi.CallRefreshMapApiService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -45,6 +47,7 @@ public class AvatarServiceImpl implements AvatarService {
     private final AvatarTagRepository avatarTagRepository;
     private final AvatarTexturePlaneRepository avatarTexturePlaneRepository;
     private final SkyIslandCoordinateRepository skyIslandCoordinateRepository;
+    private final CallRefreshMapApiService callRefreshMapApiService;
 
     @Autowired
     public AvatarServiceImpl(FileService fileService, AvatarRepository avatarRepository,
@@ -52,7 +55,7 @@ public class AvatarServiceImpl implements AvatarService {
                              AvatarBuildingBundleRepository avatarBuildingBundleRepository,
                              BuildingBundleRepository buildingBundleRepository, AvatarTagRepository avatarTagRepository,
                              AvatarTexturePlaneRepository avatarTexturePlaneRepository,
-                             SkyIslandCoordinateRepository skyIslandCoordinateRepository) {
+                             SkyIslandCoordinateRepository skyIslandCoordinateRepository, CallRefreshMapApiService callRefreshMapApiService) {
         this.fileService = fileService;
         this.avatarRepository = avatarRepository;
         this.skyIslandRepository = skyIslandRepository;
@@ -62,6 +65,7 @@ public class AvatarServiceImpl implements AvatarService {
         this.avatarTagRepository = avatarTagRepository;
         this.avatarTexturePlaneRepository = avatarTexturePlaneRepository;
         this.skyIslandCoordinateRepository = skyIslandCoordinateRepository;
+        this.callRefreshMapApiService = callRefreshMapApiService;
     }
 
     @Override
@@ -103,6 +107,9 @@ public class AvatarServiceImpl implements AvatarService {
         skyIslandRepository.save(skyIsland);
         SkyIslandCoordinate skyIslandCoordinate = new SkyIslandCoordinate(skyIsland,0,0,0,"default","default", "default", "default");
         skyIslandCoordinateRepository.save(skyIslandCoordinate);
+
+        //맵 좌표 재설정 메소드 호출
+        callRefreshMapApiService.sendRefreshMapRequest();
     }
 
     @Override
