@@ -47,7 +47,6 @@ public class AvatarServiceImpl implements AvatarService {
     private final AvatarTagRepository avatarTagRepository;
     private final AvatarTexturePlaneRepository avatarTexturePlaneRepository;
     private final SkyIslandCoordinateRepository skyIslandCoordinateRepository;
-    private final CallRefreshMapApiService callRefreshMapApiService;
 
     @Autowired
     public AvatarServiceImpl(FileService fileService, AvatarRepository avatarRepository,
@@ -55,7 +54,7 @@ public class AvatarServiceImpl implements AvatarService {
                              AvatarBuildingBundleRepository avatarBuildingBundleRepository,
                              BuildingBundleRepository buildingBundleRepository, AvatarTagRepository avatarTagRepository,
                              AvatarTexturePlaneRepository avatarTexturePlaneRepository,
-                             SkyIslandCoordinateRepository skyIslandCoordinateRepository, CallRefreshMapApiService callRefreshMapApiService) {
+                             SkyIslandCoordinateRepository skyIslandCoordinateRepository) {
         this.fileService = fileService;
         this.avatarRepository = avatarRepository;
         this.skyIslandRepository = skyIslandRepository;
@@ -65,7 +64,6 @@ public class AvatarServiceImpl implements AvatarService {
         this.avatarTagRepository = avatarTagRepository;
         this.avatarTexturePlaneRepository = avatarTexturePlaneRepository;
         this.skyIslandCoordinateRepository = skyIslandCoordinateRepository;
-        this.callRefreshMapApiService = callRefreshMapApiService;
     }
 
     @Override
@@ -107,9 +105,6 @@ public class AvatarServiceImpl implements AvatarService {
         skyIslandRepository.save(skyIsland);
         SkyIslandCoordinate skyIslandCoordinate = new SkyIslandCoordinate(skyIsland,0,0,0,"default","default", "default", "default");
         skyIslandCoordinateRepository.save(skyIslandCoordinate);
-
-        //맵 좌표 재설정 메소드 호출
-        callRefreshMapApiService.sendRefreshMapRequest();
     }
 
     @Override
