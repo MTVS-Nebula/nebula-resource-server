@@ -1,9 +1,6 @@
 package com.nebula.nebula_resource.helper.callapi;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,7 +9,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class CallRefreshMapApiService {
-    @Async
     public void sendRefreshMapRequest(){
         RestTemplate restTemplate = new RestTemplate();
 
@@ -21,6 +17,7 @@ public class CallRefreshMapApiService {
         HttpEntity<?> entity = new HttpEntity<>(header);
 
         UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
-        restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Object.class);
+        ResponseEntity<?> result = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, String.class);
+        System.out.println(result);
     }
 }
