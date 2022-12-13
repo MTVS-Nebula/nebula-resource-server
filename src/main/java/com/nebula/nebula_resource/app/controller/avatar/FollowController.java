@@ -37,7 +37,7 @@ public class FollowController {
         }
     }
 
-    @DeleteMapping("{avatarName}")
+    @PutMapping("{avatarName}")
     public ResponseEntity<?> unfollow(@PathVariable String avatarName,
                                       @RequestBody FollowRequestDTO followRequestDTO){
         try {
