@@ -26,6 +26,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.nebula.nebula_resource.helper.callapi.CallRefreshMapApiService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -103,8 +105,6 @@ public class AvatarServiceImpl implements AvatarService {
         skyIslandRepository.save(skyIsland);
         SkyIslandCoordinate skyIslandCoordinate = new SkyIslandCoordinate(skyIsland,0,0,0,"default","default", "default", "default");
         skyIslandCoordinateRepository.save(skyIslandCoordinate);
-
-        sendRefreshRequest();
     }
 
     @Override
@@ -174,9 +174,6 @@ public class AvatarServiceImpl implements AvatarService {
         return result;
     }
 
-    private void sendRefreshRequest(){
-
-    }
 
     private void checkAvatarAuthentication(Avatar avatar){
         String username = getContextUsername();

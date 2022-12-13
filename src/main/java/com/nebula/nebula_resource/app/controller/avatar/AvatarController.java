@@ -9,6 +9,8 @@ import com.nebula.nebula_resource.helper.api.ResultResponseMessage;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+
+import com.nebula.nebula_resource.helper.callapi.CallRefreshMapApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +21,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("avatar")
 public class AvatarController {
     private final AvatarService avatarService;
+    private final CallRefreshMapApiService callRefreshMapApiService;
 
     @Autowired
-    public AvatarController(AvatarService avatarService) {
+    public AvatarController(AvatarService avatarService, CallRefreshMapApiService callRefreshMapApiService) {
         this.avatarService = avatarService;
+        this.callRefreshMapApiService = callRefreshMapApiService;
     }
 
     @GetMapping
@@ -56,6 +59,8 @@ public class AvatarController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        } finally {
+            callRefreshMapApiService.sendRefreshMapRequest();
         }
     }
 
