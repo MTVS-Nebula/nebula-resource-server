@@ -4,6 +4,7 @@ Nebula resource
 RestAPI 로 Unity Client 와 데이터를 송수신하며 플랫폼 자원의 모든 데이터를 관리합니다<br>
 
 ### 아키텍처
+![](https://cdn.discordapp.com/attachments/912599924036735019/1058704626582556722/infra_.png)
 - AWS 상의 다중 가용영역에 배포되어 있습니다.
 - github hooks / Jenkins를 이용해 개발 서버 CI/CD
 - codeBuilder / codeDeploy를 이용해 배포 서버 CI/CD
